@@ -3,8 +3,8 @@ Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran e
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Name:		sudo
-Version:	1.6.3p7
-Release:	5
+Version:	1.6.4p1
+Release:	1
 License:	BSD
 Group:		Applications/System
 Group(de):	Applikationen/System
@@ -12,7 +12,6 @@ Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
-Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
@@ -56,7 +55,6 @@ shell.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 %configure2_13 \
