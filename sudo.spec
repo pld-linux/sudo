@@ -35,7 +35,7 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 %build
 autoconf
 CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
-./configure %{_target} \
+./configure %{_target_platform} \
 	--prefix=/usr \
 	--sbindir=%{_sbindir} \
 	--with-timedir=/var/run \
