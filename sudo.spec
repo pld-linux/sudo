@@ -1,10 +1,13 @@
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios especМficos ejecuten comandos como se fueran el root
+Summary(ja):	╩ьдЙ╔Ф║╪╔╤╓кю╘╦биу╓нroot╦╒╦б╓Р╣Ж╡д╓╧╓К
 Summary(pl):	Umo©liwia wykonywaniew poleceЯ jako root dla konkretnych u©ytkownikСw
 Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fossem o root
+Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
+Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.6
-Release:	1
+Release:	2
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
@@ -37,6 +40,20 @@ algunos (o todos) comandos como root, registrando todos los comandos y
 argumentos. Sudo opera en una base por comando, no siendo un
 substituto para la shell.
 
+%description -l ja
+sudo (superuser do)
+╓х╓о╔╥╔╧╔ф╔Ю╢имЩ╪т╓╛║╒©╝мя╓г╓╜╓К╔Ф║╪╔╤(╓ч╓©╓о╔╟╔К║╪╔в)╓кбп
+╓╥╓ф║╒╓╓╓╞╓д╓╚(╓Б╓╥╓╞╓оа╢╓ф)╓н╔Ё╔ч╔С╔и╓Р root
+╓х╓╥╓ф╪б╧т╓г╓╜╓К╓Х╓╕║╒╓╫╓н╔Ё╔ч╔С
+╔и╓н╪б╧тмЗнР╓н╔М╔╟╓Р╓х╓Й╓д╓д╣Ж╡д╓╧╓К╩еах╓ъ╓г╓╧║ёsudo
+╓о╔Ё╔ч╔С╔и╟Л╧тц╠╟л╓гф╟╨Н
+╓╥╓ч╓╧║ё╔╥╔╖╔К╓нцж╓╜╢╧╓╗╓г╓о╓╒╓Й╓ч╓╩╓С║ё╟й╡╪╓н╣║г╫╓РфБб╒╓╥╓ф╓╓╓ч╓╧║ё╔ш╔╧╔хц╠╟л
+╓г║╒╓╫╓н╔Ё╔ч╔С╔и╓Р╪б╧т╡дг╫╓й╔Ф║╪╔╤╓Рю╘╦б╓╧╓К╣║г╫║╒Ёф╔Ё╔ч╔С╔и╓к╓д╓╓╓ф╓н(ц╞╓╛╓й
+╓к╓Р╪б╧т╓╥╓©╓╚╓н╨╞юв╓Р╩д╓╧╓©╓А╓н)к╜иы╓й╔М╔╝╔С╔╟╣║г╫║╒sudo
+╔Ё╔ч╔С╔и╓н╔©╔╓╔Ю╔╒╔╕
+╔х╩Ч╢ж╓РюъдЙ╡дг╫║╒йё©Т╓н╔ч╔╥╔С╓гф╠╟Л╓нюъдЙ╔у╔║╔╓╔К(sudoers)╓Р╤╕м╜╓╧╓К╣║г╫║╒╓╛
+╓╒╓Й╓ч╓╧║ё
+
 %description -l pl
 Sudo (superuser do) umo©liwia wykonywanie konkretnych poleceЯ jako
 root dla wyspecyfikowanych u©ytkownikСw (rzeczywiste i efektywne
@@ -50,6 +67,29 @@ usuАrios (ou grupos de usuАrios) a habilidade para rodar alguns (ou
 todos) comandos como root, registrando todos os comandos e argumentos.
 Sudo opera numa base por comando, nЦo sendo um substituto para a
 shell.
+
+%description -l ru
+Sudo (superuser do) позволяет системному администратору предоставлять
+определенным пользователям (или их группам) возможность исполнять
+некоторые (или все) команды с правами root, при этом протоколируя все
+команды и аргументы. Sudo работает с отдельными командами, это не
+замена командной оболочки (shell). Некоторые из возможностей sudo:
+ограничение того, какие команды пользователь может запускать в
+зависимости от хоста; полное протоколирование каждой команды;
+настраиваемое время, на протяжении которого sudo помнит пароль;
+использование одного конфигурационного файла (sudoers) на многих
+машинах.
+
+%description -l uk
+Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
+користувачам (чи ╖х групам) можлив╕сть виконувати деяк╕ (чи вс╕)
+команди з правами root, при цьому протоколюючи вс╕ команди та
+аргументи. Sudo працю╓ з окремими командами, це не зам╕на командно╖
+оболонки (shell). Деяк╕ з можливостей sudo: обмеження того, як╕
+команди користувач може запускати в залежност╕ в╕д хоста; повне
+протоколювання кожно╖ команди; настроюваний час, на протяз╕ якого sudo
+пам'ята╓ пароль; використання одного конф╕гурац╕йного файлу (sudoers)
+на багатьох машинах.
 
 %prep
 %setup -q
