@@ -1,0 +1,39 @@
+--- sudo-1.6.8p1/configure.in.orig	2004-09-19 12:26:48.379583056 +0200
++++ sudo-1.6.8p1/configure.in	2004-09-19 12:28:18.655858976 +0200
+@@ -1703,9 +1703,9 @@
+ AC_CHECK_FUNCS(lockf flock, [break])
+ AC_CHECK_FUNCS(waitpid wait3, [break])
+ AC_CHECK_FUNCS(innetgr _innetgr, [AC_CHECK_FUNCS(getdomainname) [break]])
+-AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], AC_LIBOBJ(lsearch), -), AC_LIBOBJ(lsearch))])
++AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, [AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], [AC_LIBOBJ(lsearch)], -)], [AC_LIBOBJ(lsearch)])])
+ AC_CHECK_FUNCS(utimes, [AC_CHECK_FUNCS(futimes futimesat, [break])], [AC_CHECK_FUNCS(futime) AC_LIBOBJ(utimes)])
+-SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), AC_LIBOBJ(fnmatch))
++SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), [AC_LIBOBJ(fnmatch)])
+ SUDO_FUNC_ISBLANK
+ AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
+ AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
+--- sudo-1.6.8/acinclude.m4.orig	2004-05-17 22:18:36.000000000 +0200
++++ sudo-1.6.8/acinclude.m4	2004-08-29 21:41:42.727407184 +0200
+@@ -248,9 +248,9 @@
+ rm -f core core.* *.core])dnl
+ AC_MSG_RESULT($sudo_cv_func_fnmatch)
+ if test $sudo_cv_func_fnmatch = yes; then
+-  [$1]
++  $1
+ else
+-  [$2]
++  $2
+ fi
+ ])
+ 
+--- sudo-1.6.8/Makefile.in.orig	2004-08-29 21:54:19.758320000 +0200
++++ sudo-1.6.8/Makefile.in	2004-08-29 22:12:19.986101408 +0200
+@@ -187,7 +187,7 @@
+ 	$(CC) -o $@ $(TESTOBJS) $(LIBOBJS) $(LDFLAGS) $(LIBS) $(NET_LIBS)
+ 
+ sudo_noexec.la: sudo_noexec.lo
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -rpath $(noexecdir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -module -avoid-version -rpath $(noexecdir)
+ 
+ # Uncomment the following if you want "make distclean" to clean the parser
+ @DEV@PARSESRCS = sudo.tab.h sudo.tab.c lex.yy.c def_data.c def_data.h
