@@ -41,7 +41,7 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 ./configure %{_target_platform} \
 	--prefix=%{_prefix} \
 	--sbindir=%{_sbindir} \
-	--with-timedir=/var/run \
+	--with-timedir=/var/run/sudo \
 	--with-C2 \
 	--with-pam \
 	--with-logging=both \
@@ -63,7 +63,7 @@ make CFLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/log}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
 
 make install \
 	prefix=$RPM_BUILD_ROOT%{_prefix} \
@@ -94,3 +94,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0555,root,root) %{_sbindir}/visudo
 %{_mandir}/man*/*
 %attr(0600,root,root) %ghost /var/log/sudo.log
+%attr(0700,root,root) %dir /var/run/sudo
