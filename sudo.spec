@@ -1,4 +1,5 @@
 #
+# Conditional build:
 %bcond_without  selinux   # do not compile selinux support
 #
 Summary:	Allows command execution as root for specified users
@@ -9,24 +10,25 @@ Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fosse
 Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
-Version:	1.6.7p5
-Release:	6
+Version:	1.6.8
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	55d503e5c35bf1ea83d38244e0242aaf
+# Source0-md5:	94e0657c46e129cf6f1fe7ee313d6636
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
+Patch1:		%{name}-ac.patch
 URL:		http://www.courtesan.com/sudo/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 BuildRequires:	pam-devel
 %{?with_selinux:BuildRequires:	libselinux-devel}
 Requires:	pam >= 0.77.3
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
@@ -101,16 +103,25 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 %setup -q
 %{?with_selinux:%patch0 -p1}
 
+# only local macros
+mv -f aclocal.m4 acinclude.m4
+# kill libtool.m4 copy
+rm -f acsite.m4
+
+%patch1 -p1
+
 %build
-cp /usr/share/automake/config.sub .
+cp -f /usr/share/automake/config.sub .
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
 %configure \
+	NROFFPROG=nroff \
 	--with-timedir=/var/run/sudo \
-	--with-C2 \
 	--with-pam \
 	--with-logging=both \
 	--with-logfac=auth \
 	--with-logpath=/var/log/sudo \
-	--with-message=full \
 	--with-ignore-dot \
 	--with-env-editor \
 	--with-insults \
@@ -119,10 +130,9 @@ cp /usr/share/automake/config.sub .
 	--with-csops-insults \
 	--with-hal-insults \
 	--with-goons-insults \
-	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
+	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
-	--disable-saved-ids \
-	NROFFPROG=nroff
+	--disable-saved-ids
 
 %{__make}
 
@@ -143,17 +153,22 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
+rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
 %doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
-%attr(0440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
-%attr(0600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
-%attr(4555,root,root) %{_bindir}/sudo
-%attr(0555,root,root) %{_sbindir}/visudo
+%attr(440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
+%attr(4755,root,root) %{_bindir}/sudo
+%attr(4755,root,root) %{_bindir}/sudoedit
+%attr(755,root,root) %{_sbindir}/sesh
+%attr(755,root,root) %{_sbindir}/visudo
+%attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man*/*
-%attr(0600,root,root) %ghost /var/log/sudo
-%attr(0640,root,root) /etc/logrotate.d/*
-%attr(0700,root,root) %dir /var/run/sudo
+%attr(600,root,root) %ghost /var/log/sudo
+%attr(640,root,root) /etc/logrotate.d/*
+%attr(700,root,root) %dir /var/run/sudo
