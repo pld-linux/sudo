@@ -60,13 +60,13 @@ LDFLAGS="-s"; export LDFLAGS
 	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
 
-make CFLAGS="$RPM_OPT_FLAGS"
+%{__make} CFLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
 
-make install \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	install_uid=`id -u` \
 	install_gid=`id -g` \
