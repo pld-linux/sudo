@@ -132,8 +132,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
-gzip -9nf BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
-
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 %clean
@@ -141,7 +139,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz sample.sudoers
+%doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
 %attr(0440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(0600,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/pam.d/sudo
 %attr(4555,root,root) %{_bindir}/sudo
