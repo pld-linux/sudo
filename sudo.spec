@@ -10,6 +10,7 @@ Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	sudo.pamd
 Patch:		sudo-DESTDIR.patch
 URL:		http://www.courtesan.com/courtesan/products/sudo/
+BuildRequires:	pam-devel
 BuildRoot:	/tmp/%{name}-%{version}-root
 Obsoletes:	cu-sudo
 
