@@ -1,3 +1,6 @@
+#
+%bcond_without  selinux   # do not compile selinux support
+#
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios especМficos ejecuten comandos como se fueran el root
 Summary(ja):	╩ьдЙ╔Ф║╪╔╤╓кю╘╦биу╓нroot╦╒╦б╓Р╣Ж╡д╓╧╓К
@@ -20,7 +23,7 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	pam-devel
-BuildRequires:	libselinux-devel
+%{?with_selinux:BuildRequires:	libselinux-devel}
 Requires:	pam >= 0.77.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
@@ -96,7 +99,7 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 
 %prep
 %setup -q
-%patch0 -p1
+%{?with_selinux:%patch0 -p1}
 
 %build
 cp /usr/share/automake/config.sub .
