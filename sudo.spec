@@ -10,6 +10,8 @@ Source:		ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
 URL:		http://www.courtesan.com/courtesan/products/sudo/
 BuildRoot:	/tmp/%{name}-%{version}-root
 
+%define	_sysconfdir	/etc
+
 %description
 Sudo (superuser do) allows a permitted user to execute a command as the
 superuser (real and effective uid and gid are set to 0 and root's group as
@@ -36,7 +38,7 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 autoconf
 CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 ./configure %{_target_platform} \
-	--prefix=/usr \
+	--prefix=%{_prefix} \
 	--sbindir=%{_sbindir} \
 	--with-timedir=/var/run \
 	--with-C2 \
@@ -60,24 +62,24 @@ make CFLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{etc/pam.d,var/log}
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/pam.d,/var/log
 
 make install \
-	prefix=$RPM_BUILD_ROOT/usr \
+	prefix=$RPM_BUILD_ROOT%{_prefix} \
 	visudodir=$RPM_BUILD_ROOT%{_sbindir} \
-	sysconfdir=$RPM_BUILD_ROOT/etc \
+	sysconfdir=$RPM_BUILD_ROOT%{_sysconfdir} \
 	install_uid=`id -u` \
 	install_gid=`id -g` \
 	sudoers_uid=`id -u` \
 	sudoers_gid=`id -g`
 
-install sample.pam $RPM_BUILD_ROOT/etc/pam.d/sudo
+install sample.pam $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo.log
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man{5,8}/* \
 	BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
 
-chmod -R +r $RPM_BUILD_ROOT/usr
+chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,8 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.gz sample.sudoers
-%attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) /etc/sudoers
-%attr(0600,root,root) %config /etc/pam.d/sudo
+%attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(0600,root,root) %config %{_sysconfdir}/pam.d/sudo
 %attr(4555,root,root) %{_bindir}/sudo
 %attr(0555,root,root) %{_sbindir}/visudo
 %{_mandir}/man*/*
