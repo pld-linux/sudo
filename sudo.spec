@@ -8,6 +8,7 @@ Group:		Utilities/System
 Group(pl):	Narzêdzia/Systemowe
 Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
 Source1:	sudo.pamd
+Patch:		sudo-DESTDIR.patch
 URL:		http://www.courtesan.com/courtesan/products/sudo/
 BuildRoot:	/tmp/%{name}-%{version}-root
 
@@ -34,6 +35,7 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 
 %prep
 %setup -q -n %{name}.v%{version}
+%patch -p1
 
 %build
 autoconf
@@ -64,9 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
 
 make install \
-	prefix=$RPM_BUILD_ROOT%{_prefix} \
-	visudodir=$RPM_BUILD_ROOT%{_sbindir} \
-	sysconfdir=$RPM_BUILD_ROOT%{_sysconfdir} \
+	DESTDIR=$RPM_BUILD_ROOT \
 	install_uid=`id -u` \
 	install_gid=`id -g` \
 	sudoers_uid=`id -u` \
