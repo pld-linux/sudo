@@ -4,13 +4,14 @@ Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkownik
 Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Name:		sudo
 Version:	1.6.3p7
-Release:	4
+Release:	5
 License:	BSD
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
+Source2:	%{name}.logrotate
 Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
@@ -64,7 +65,7 @@ shell.
 	--with-pam \
 	--with-logging=both \
 	--with-logfac=auth \
-	--with-logpath=/var/log/sudo.log \
+	--with-logpath=/var/log/sudo \
 	--with-message=full \
 	--with-ignore-dot \
 	--with-env-editor \
@@ -81,7 +82,7 @@ shell.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -90,8 +91,9 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
 	sudoers_uid=`id -u` \
 	sudoers_gid=`id -g`
 
-install %{SOURCE1}  $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
-touch $RPM_BUILD_ROOT/var/log/sudo.log
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
+touch $RPM_BUILD_ROOT/var/log/sudo
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 gzip -9nf BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
 
@@ -108,5 +110,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4555,root,root) %{_bindir}/sudo
 %attr(0555,root,root) %{_sbindir}/visudo
 %{_mandir}/man*/*
-%attr(0600,root,root) %ghost /var/log/sudo.log
+%attr(0600,root,root) %ghost /var/log/sudo
+%attr(0640,root,root) /etc/logrotate.d/*
 %attr(0700,root,root) %dir /var/run/sudo
