@@ -128,7 +128,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo
 	sudoers_uid=`id -u` \
 	sudoers_gid=`id -g`
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
@@ -141,7 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
 %attr(0440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
-%attr(0600,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/pam.d/sudo
+%attr(0600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
 %attr(4555,root,root) %{_bindir}/sudo
 %attr(0555,root,root) %{_sbindir}/visudo
 %{_mandir}/man*/*
