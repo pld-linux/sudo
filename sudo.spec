@@ -7,7 +7,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.7p5
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
