@@ -1,12 +1,12 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.6.3p3
+Version:	1.6.3p4
 Release:	1
 License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
-Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	sudo.pamd
 Patch0:		sudo-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
