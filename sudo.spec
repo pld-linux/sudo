@@ -2,15 +2,17 @@ Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
 Version:	1.6.3p5
-Release:	1
+Release:	2
 License:	GPL
-Group:		Utilities/System
-Group(pl):	Narzêdzia/System
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
-Source1:	sudo.pamd
-Patch0:		sudo-DESTDIR.patch
+Source1:	%{name}.pamd
+Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	pam-devel
+BuildRequires:	/bin/vi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
 
@@ -40,7 +42,6 @@ opisane w pliku /etc/sudoers.
 
 %build
 autoconf
-LDFLAGS="-s"; export LDFLAGS
 %configure \
 	--with-timedir=/var/run/sudo \
 	--with-C2 \
