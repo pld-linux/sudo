@@ -1,5 +1,7 @@
 Summary:	Allows command execution as root for specified users
+Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran el root
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
+Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Name:		sudo
 Version:	1.6.3p7
 Release:	3
@@ -11,6 +13,7 @@ Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
+BuildRequires:	autoconf
 BuildRequires:	pam-devel
 BuildRequires:	/bin/vi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -29,12 +32,26 @@ stamp without running a command. The password prompt itself will also
 time out if the password is not entered with N minutes (again, this is
 defined at installation time and defaults to 5 minutes).
 
+%description -l es
+Sudo (superuser do) permite que el administrador del sistema otorga a
+ciertos usuarios (o grupos de usuarios) la habilidad para ejecutar
+algunos (o todos) comandos como root, registrando todos los comandos y
+argumentos. Sudo opera en una base por comando, no siendo un
+substituto para la shell.
+
 %description -l pl
 Sudo (superuser do) umo¿liwia wykonywanie konkretnych poleceñ jako
 root dla wyspecyfikowanych u¿ytkowników (rzeczywiste i efektywne
 uid/gid podczas wykonywania tych programów jest 0). To kto mo¿e
 wykonywaæ konkretne polecenia i w jaki sposób ma byæ autoryzowany jest
 opisane w pliku /etc/sudoers.
+
+%description -l pt_BR
+Sudo (superuser do) permite que o administrador do sistema dê a certos
+usuários (ou grupos de usuários) a habilidade para rodar alguns (ou
+todos) comandos como root, registrando todos os comandos e argumentos.
+Sudo opera numa base por comando, não sendo um substituto para a
+shell.
 
 %prep
 %setup -q
