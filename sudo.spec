@@ -7,7 +7,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.7p5
-Release:	5
+Release:	6
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -16,7 +16,6 @@ Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
-Patch1:		%{name}-selinux-pld.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -98,7 +97,6 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 cp /usr/share/automake/config.sub .
