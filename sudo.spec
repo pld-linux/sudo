@@ -20,6 +20,7 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	pam-devel
+BuildRequires:	libselinux-devel
 Requires:	pam >= 0.77.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
