@@ -17,6 +17,7 @@ Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	pam-devel
 Requires:	pam >= 0.77.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -95,6 +96,7 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 %setup -q
 
 %build
+cp /usr/share/automake/config.sub .
 %configure2_13 \
 	--with-timedir=/var/run/sudo \
 	--with-C2 \
