@@ -1,9 +1,9 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.6.1
+Version:	1.6.2
 Release:	1
-Copyright:	GPL
+License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/Systemowe
 Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/%{name}-%{version}.tar.gz
@@ -20,20 +20,19 @@ Obsoletes:	cu-sudo
 Sudo (superuser do) allows a permitted user to execute a command as the
 superuser (real and effective uid and gid are set to 0 and root's group as
 set in the passwd file respectively).
-                                                                                                              
+
 Sudo determines who is an authorized user by consulting the file
-/etc/sudoers.  By giving sudo the -v flag a user can update the time stamp
-without running a command.  The password prompt itself will also time out if
-the password is not entered with N minutes (again, this is defined at
+/etc/sudoers. By giving sudo the -v flag a user can update the time stamp
+without running a command. The password prompt itself will also time out
+if the password is not entered with N minutes (again, this is defined at
 installation time and defaults to 5 minutes).
 
 %description -l pl
 Sudo (superuser do) umo¿liwia wykonywanie konkretnych poleceñ jako root dla
 wyspecyfikowanych u¿ytkowników (rzeczywiste i efektywne uid/gid podczas
-wykonywania tych programów jest 0).
-
-To kto mo¿e wykonywaæ konkretne polecenia i w jaki sposób ma byæ
-autoryzowany jest opisane w pliku /etc/sudoers.
+wykonywania tych programów jest 0). To kto mo¿e wykonywaæ konkretne
+polecenia i w jaki sposób ma byæ autoryzowany jest opisane w pliku
+/etc/sudoers.
 
 %prep
 %setup -q
@@ -58,7 +57,7 @@ LDFLAGS="-s"; export LDFLAGS
 	--with-csops-insults \
 	--with-hal-insults \
 	--with-goons-insults \
-	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
+	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
 
 make CFLAGS="$RPM_OPT_FLAGS"
