@@ -1,7 +1,7 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.6.2p3
+Version:	1.6.3
 Release:	1
 License:	GPL
 Group:		Utilities/System
