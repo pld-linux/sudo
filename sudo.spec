@@ -11,7 +11,7 @@ Source1:	sudo.pamd
 Patch:		sudo-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	pam-devel
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
 
 %define		_sysconfdir	/etc
