@@ -6,7 +6,7 @@ Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fosse
 Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
-Version:	1.6.7p4
+Version:	1.6.7p5
 Release:	1
 Epoch:		1
 License:	BSD
