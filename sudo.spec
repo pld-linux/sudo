@@ -73,7 +73,7 @@ make install \
 install sample.pam $RPM_BUILD_ROOT/etc/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo.log
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man{5,8}/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man{5,8}/* \
 	BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
 
 chmod -R +r $RPM_BUILD_ROOT/usr
@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0600,root,root) %config /etc/pam.d/sudo
 %attr(4555,root,root) /usr/bin/sudo
 %attr(0555,root,root) /usr/sbin/visudo
-/usr/man/man*/*
+%{_mandir}/man*/*
 %attr(0600,root,root) %ghost /var/log/sudo.log
 
 %changelog
