@@ -1,43 +1,38 @@
-diff -Nru sudo-1.6.1/Makefile.in sudo-1.6.1.new/Makefile.in
---- sudo-1.6.1/Makefile.in	Sun Dec  5 03:18:45 1999
-+++ sudo-1.6.1.new/Makefile.in	Sat Dec 11 12:56:48 1999
-@@ -272,27 +272,27 @@
+diff -Nru sudo-1.6.3/Makefile.in sudo-1.6.3.new/Makefile.in
+--- sudo-1.6.3/Makefile.in	Mon Mar 27 04:57:52 2000
++++ sudo-1.6.3.new/Makefile.in	Tue Mar 28 01:30:00 2000
+@@ -281,27 +281,19 @@
  install: install-dirs install-binaries install-sudoers install-man
  
  install-dirs:
--	$(SHELL) $(srcdir)/mkinstalldirs $(sudodir) $(visudodir) $(sudoersdir) $(mandir8) $(mandir5)
-+	$(SHELL) $(srcdir)/mkinstalldirs $(DESTDIR)$(sudodir) $(DESTDIR)$(visudodir) $(DESTDIR)$(sudoersdir) $(DESTDIR)$(mandir8) $(DESTDIR)$(mandir5)
+-	$(SHELL) $(srcdir)/mkinstalldirs $(sudodir) $(visudodir) $(sudoersdir) $(mandirsu) $(mandirform)
++	$(SHELL) $(srcdir)/mkinstalldirs $(DESTDIR)$(sudodir) $(DESTDIR)$(visudodir) $(DESTDIR)$(sudoersdir) $(DESTDIR)$(mandirsu) $(DESTDIR)$(mandirform)
  
  install-binaries: $(PROGS)
 -	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 4111 -s sudo $(sudodir)/sudo
 -	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0111 -s visudo $(visudodir)/visudo
-+	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 4111 -s sudo $(DESTDIR)$(sudodir)/sudo
-+	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0111 -s visudo $(DESTDIR)$(visudodir)/visudo
++	$(INSTALL) -m 755 -s sudo $(DESTDIR)$(sudodir)/sudo
++	$(INSTALL) -m 755 -s visudo $(DESTDIR)$(visudodir)/visudo
  
  install-sudoers:
--	@ if [ -f $(sudoersdir)/sudoers ]; then  \
+-	@if [ -f $(sudoersdir)/sudoers ]; then \
 -	    echo "Setting user/group and mode on existing $(sudoersdir)/sudoers file."; \
 -	    chown $(sudoers_uid) $(sudoersdir)/sudoers; \
 -	    chgrp $(sudoers_gid) $(sudoersdir)/sudoers; \
 -	    chmod $(sudoers_mode) $(sudoersdir)/sudoers; \
-+	@ if [ -f $(DESTDIR)$(sudoersdir)/sudoers ]; then  \
-+	    echo "Setting user/group and mode on existing $(DESTDIR)$(sudoersdir)/sudoers file."; \
-+	    chown $(sudoers_uid) $(DESTDIR)$(sudoersdir)/sudoers; \
-+	    chgrp $(sudoers_gid) $(DESTDIR)$(sudoersdir)/sudoers; \
-+	    chmod $(sudoers_mode) $(DESTDIR)$(sudoersdir)/sudoers; \
- 	else \
- 	    $(INSTALL) -o $(sudoers_uid) -g $(sudoers_gid) -m $(sudoers_mode) \
+-	else \
+-	    $(INSTALL) -o $(sudoers_uid) -g $(sudoers_gid) -m $(sudoers_mode) \
 -		$(srcdir)/sudoers $(sudoersdir)/sudoers; \
-+		$(srcdir)/sudoers $(DESTDIR)$(sudoersdir)/sudoers; \
- 	fi
+-	fi
++	$(INSTALL) $(srcdir)/sudoers $(DESTDIR)$(sudoersdir)/sudoers
  
  install-man:
--	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudo.$(mantype) $(mandir8)/sudo.$(mansect8)
--	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/visudo.$(mantype) $(mandir8)/visudo.$(mansect8)
--	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudoers.$(mantype) $(mandir5)/sudoers.$(mansect5)
-+	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudo.$(mantype) $(DESTDIR)$(mandir8)/sudo.$(mansect8)
-+	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/visudo.$(mantype) $(DESTDIR)$(mandir8)/visudo.$(mansect8)
-+	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudoers.$(mantype) $(DESTDIR)$(mandir5)/sudoers.$(mansect5)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 @mansrcdir@/sudo.$(mantype) $(mandirsu)/sudo.$(mansectsu)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 @mansrcdir@/visudo.$(mantype) $(mandirsu)/visudo.$(mansectsu)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 @mansrcdir@/sudoers.$(mantype) $(mandirform)/sudoers.$(mansectform)
++	$(INSTALL) -m 0644 @mansrcdir@/sudo.$(mantype) $(DESTDIR)$(mandirsu)/sudo.$(mansectsu)
++	$(INSTALL) -m 0644 @mansrcdir@/visudo.$(mantype) $(DESTDIR)$(mandirsu)/visudo.$(mansectsu)
++	$(INSTALL) -m 0644 @mansrcdir@/sudoers.$(mantype) $(DESTDIR)$(mandirform)/sudoers.$(mansectform)
  @MAN_POSTINSTALL@
  
- tags: $(SRCS)
+ check:
