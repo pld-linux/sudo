@@ -22,8 +22,6 @@ BuildRequires:	/bin/vi
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
 
-%define		_sysconfdir	/etc
-
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
 the superuser (real and effective uid and gid are set to 0 and root's
