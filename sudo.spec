@@ -4,7 +4,7 @@ Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkownik
 Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Name:		sudo
 Version:	1.6.5p1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Applications/System
 Group(de):	Applikationen/System
@@ -75,6 +75,7 @@ shell.
 	--with-goons-insults \
 	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
+	--disable-saved-ids 
 
 %{__make}
 
