@@ -36,7 +36,7 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 ./configure %{_target} \
 	--prefix=/usr \
-	--sbindir=/usr/sbin \
+	--sbindir=%{_sbindir} \
 	--with-timedir=/var/run \
 	--with-C2 \
 	--with-pam \
@@ -52,7 +52,7 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 	--with-csops-insults \
 	--with-hal-insults \
 	--with-goons-insults \
-	--with-secure-path="/bin:/sbin:%{_bindir}:/usr/sbin" \
+	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
 
 make CFLAGS="$RPM_OPT_FLAGS"
@@ -63,7 +63,7 @@ install -d $RPM_BUILD_ROOT/{etc/pam.d,var/log}
 
 make install \
 	prefix=$RPM_BUILD_ROOT/usr \
-	visudodir=$RPM_BUILD_ROOT/usr/sbin \
+	visudodir=$RPM_BUILD_ROOT%{_sbindir} \
 	sysconfdir=$RPM_BUILD_ROOT/etc \
 	install_uid=`id -u` \
 	install_gid=`id -g` \
@@ -87,7 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) /etc/sudoers
 %attr(0600,root,root) %config /etc/pam.d/sudo
 %attr(4555,root,root) %{_bindir}/sudo
-%attr(0555,root,root) /usr/sbin/visudo
+%attr(0555,root,root) %{_sbindir}/visudo
 %{_mandir}/man*/*
 %attr(0600,root,root) %ghost /var/log/sudo.log
 
