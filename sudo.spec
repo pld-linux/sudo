@@ -1,7 +1,7 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.5.9p1
+Version:	1.5.9p2
 Release:	1
 Copyright:	GPL
 Group:		Utilities/System
@@ -33,6 +33,7 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 %setup -q -n %{name}.v%{version}
 
 %build
+autoconf
 CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 ./configure %{_target} \
 	--prefix=/usr \
@@ -52,7 +53,7 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 	--with-csops-insults \
 	--with-hal-insults \
 	--with-goons-insults \
-	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
+	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 
 make CFLAGS="$RPM_OPT_FLAGS"
@@ -92,6 +93,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0600,root,root) %ghost /var/log/sudo.log
 
 %changelog
+* Sun May 30 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.5.9p2-1]
+- added more rpm macros.
+
 * Wed Apr  7 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.5.9p1-1]
 - added gzipping %doc
