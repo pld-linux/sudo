@@ -113,7 +113,8 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 	--with-goons-insults \
 	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
-	--disable-saved-ids
+	--disable-saved-ids \
+	NROFFPROG=nroff
 
 %{__make}
 
