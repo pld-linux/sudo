@@ -1,0 +1,43 @@
+diff -Nru sudo.v1.5.9p4/Makefile.in sudo.v1.5.9p4.new/Makefile.in
+--- sudo.v1.5.9p4/Makefile.in	Tue Mar 30 23:45:27 1999
++++ sudo.v1.5.9p4.new/Makefile.in	Mon Nov 15 01:48:34 1999
+@@ -203,27 +203,27 @@
+ install: install-dirs install-binaries install-sudoers install-man
+ 
+ install-dirs:
+-	$(srcdir)/mkinstalldirs $(sudodir) $(visudodir) $(sudoersdir) $(mandir8) $(mandir5)
++	$(srcdir)/mkinstalldirs $(DESTDIR)$(sudodir) $(DESTDIR)$(visudodir) $(DESTDIR)$(sudoersdir) $(DESTDIR)$(mandir8) $(DESTDIR)$(mandir5)
+ 
+ install-binaries: $(PROGS)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 4111 -s sudo $(sudodir)/sudo
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0111 -s visudo $(visudodir)/visudo
++	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 4111 -s sudo $(DESTDIR)$(sudodir)/sudo
++	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0111 -s visudo $(DESTDIR)$(visudodir)/visudo
+ 
+ install-sudoers:
+-	@ if [ -f $(sudoersdir)/sudoers ]; then  \
+-	    echo "Setting user/group and mode on existing $(sudoersdir)/sudoers file."; \
+-	    chown $(sudoers_uid) $(sudoersdir)/sudoers; \
+-	    chgrp $(sudoers_gid) $(sudoersdir)/sudoers; \
+-	    chmod $(sudoers_mode) $(sudoersdir)/sudoers; \
++	@ if [ -f $(DESTDIR)$(sudoersdir)/sudoers ]; then  \
++	    echo "Setting user/group and mode on existing $(DESTDIR)$(sudoersdir)/sudoers file."; \
++	    chown $(sudoers_uid) $(DESTDIR)$(sudoersdir)/sudoers; \
++	    chgrp $(sudoers_gid) $(DESTDIR)$(sudoersdir)/sudoers; \
++	    chmod $(sudoers_mode) $(DESTDIR)$(sudoersdir)/sudoers; \
+ 	else \
+ 	    $(INSTALL) -o $(sudoers_uid) -g $(sudoers_gid) -m $(sudoers_mode) \
+-		$(srcdir)/sudoers $(sudoersdir)/sudoers; \
++		$(srcdir)/sudoers $(DESTDIR)$(sudoersdir)/sudoers; \
+ 	fi
+ 
+ install-man:
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudo.$(mantype) $(mandir8)/sudo.$(mansect8)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/visudo.$(mantype) $(mandir8)/visudo.$(mansect8)
+-	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudoers.$(mantype) $(mandir5)/sudoers.$(mansect5)
++	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudo.$(mantype) $(DESTDIR)$(mandir8)/sudo.$(mansect8)
++	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/visudo.$(mantype) $(DESTDIR)$(mandir8)/visudo.$(mansect8)
++	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 0444 $(srcdir)/sudoers.$(mantype) $(DESTDIR)$(mandir5)/sudoers.$(mansect5)
+ @MAN_POSTINSTALL@
+ 
+ tags: $(SRCS)
