@@ -6,7 +6,8 @@ Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/Systemowe
-Source:		ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
+Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
+Source1:	sudo.pamd
 URL:		http://www.courtesan.com/courtesan/products/sudo/
 BuildRoot:	/tmp/%{name}-%{version}-root
 
@@ -62,7 +63,7 @@ make CFLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/pam.d,/var/log
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/log}
 
 make install \
 	prefix=$RPM_BUILD_ROOT%{_prefix} \
@@ -73,7 +74,7 @@ make install \
 	sudoers_uid=`id -u` \
 	sudoers_gid=`id -g`
 
-install sample.pam $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
+install %{SOURCE1}  $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo.log
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man{5,8}/* \
