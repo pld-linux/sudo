@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sun Nov 29 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.5.7p2-1]
-- added gziping man pages,
+- added gzipping man pages,
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
 - added "not size mtime" to %verify rule for /etc/sudoers,
 - changed way passing $RPM_OPT_FLAGS,
