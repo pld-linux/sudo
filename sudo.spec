@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	selinux	# do not compile selinux support
+%bcond_without	selinux		# build without SELinux support
 #
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios especМficos ejecuten comandos como se fueran el root
@@ -11,7 +11,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p2
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -166,7 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
-%attr(755,root,root) %{_sbindir}/sesh
+%{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
 %attr(755,root,root) %{_sbindir}/visudo
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man*/*
