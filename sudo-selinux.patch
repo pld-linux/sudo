@@ -1,0 +1,322 @@
+--- sudo-1.6.7p5/Makefile.in.selinux	2003-04-15 20:39:10.000000000 -0400
++++ sudo-1.6.7p5/Makefile.in	2003-10-27 16:57:47.000000000 -0500
+@@ -59,7 +59,8 @@
+ # Libraries
+ LIBS = @LIBS@
+ NET_LIBS = @NET_LIBS@
+-SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ $(LIBS) $(NET_LIBS)
++SELINUX_LIBS = -lselinux 
++SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ $(LIBS) $(NET_LIBS) $(SELINUX_LIBS)
+ 
+ # C preprocessor flags
+ CPPFLAGS = -I. -I$(srcdir) @CPPFLAGS@
+@@ -105,7 +106,7 @@
+ sudoers_mode = @SUDOERS_MODE@
+ 
+ # Pass in paths and uid/gid + OS dependent defined
+-DEFS = @OSDEFS@ -D_PATH_SUDOERS=\"$(sudoersdir)/sudoers\" -D_PATH_SUDOERS_TMP=\"$(sudoersdir)/sudoers.tmp\" -DSUDOERS_UID=$(sudoers_uid) -DSUDOERS_GID=$(sudoers_gid) -DSUDOERS_MODE=$(sudoers_mode)
++DEFS = @OSDEFS@ -D_PATH_SUDOERS=\"$(sudoersdir)/sudoers\" -D_PATH_SUDOERS_TMP=\"$(sudoersdir)/sudoers.tmp\" -DSUDOERS_UID=$(sudoers_uid) -DSUDOERS_GID=$(sudoers_gid) -DSUDOERS_MODE=$(sudoers_mode) -DWITH_SELINUX
+ 
+ #### End of system configuration section. ####
+ 
+--- sudo-1.6.7p5/sudo.c.selinux	2003-04-15 20:39:14.000000000 -0400
++++ sudo-1.6.7p5/sudo.c	2003-12-16 22:39:27.611732931 -0500
+@@ -101,6 +101,22 @@
+ #include "interfaces.h"
+ #include "version.h"
+ 
++#ifdef WITH_SELINUX
++#include <selinux/flask.h>             /* for SECCLASS_CHR_FILE */
++#include <selinux/selinux.h>           /* for is_selinux_enabled() */
++#include <selinux/context.h>           /* for context-mangling functions */
++#include <selinux/get_default_type.h>
++
++char *role_s = NULL;               /* role spec'd by user in argv[] */
++char *type_s = NULL;               /* type spec'd by user in argv[] */
++security_context_t new_context;          /* our target security ID ("sid") */
++security_context_t old_context;		     /* our original securiy ID ("old_context") */
++char *ttyn   = NULL;	    /* tty path */
++security_context_t tty_context;          /* current sid of tty */
++security_context_t new_tty_context;      /* sid to change to while running command*/
++struct stat statbuf;
++#endif
++
+ #ifndef lint
+ static const char rcsid[] = "$Sudo: sudo.c,v 1.334 2003/04/01 15:02:49 millert Exp $";
+ #endif /* lint */
+@@ -358,6 +374,141 @@
+     if (!(validated & FLAG_NOPASS))
+ 	check_user();
+ 
++#ifdef WITH_SELINUX
++    /*
++     *	
++     * Step 1:  Handle command-line arguments.
++     *
++     */
++
++
++    if( is_selinux_enabled() ) {
++
++      security_context_t context_s;      /* our security context as a string */
++      int context_length;
++      context_t context;                 /* manipulatable form of context_s */
++  
++
++      /* Fill in a default type if one hasn't been specified */
++      if( role_s && !type_s ) {
++	if( get_default_type(role_s,&type_s) )
++	  {
++	    fprintf(stderr,"Couldn't get default type.\n");
++	    exit(-1);
++	  }
++#ifdef CANTSPELLGDB
++	printf( "Your type will be %s.\n", type_s );
++#endif  
++      }
++
++ 
++      /*
++       * Get the SID and context of the caller, and extract
++       * the username from the context.  Don't rely on the Linux
++       * uid information - it isn't trustworthy.
++       */
++
++      /* Put the caller's SID into `old_context'. */
++      if( 0!=(getprevcon(&old_context)) ) {
++	fprintf(stderr,"failed to get old_context.\n");
++	exit(-1);
++      }
++
++#ifdef CANTSPELLGDB
++      printf( "Your old context was %s\n", old_context );
++#endif
++      /* 
++       * Create a context structure so that we extract and modify 
++       * components easily. 
++       */
++      context=context_new(old_context);
++
++      /*
++       *
++       * Step 3:  Construct a new SID based on our old SID and the
++       *          arguments specified on the command line.
++       *
++       */
++      
++      /* The first step in constructing a new SID for the new shell we  *
++       * plan to exec is to take our old context in `context' as a   *
++       * starting point, and modify it according to the options the user *
++       * specified on the command line.                                  */
++      
++      /* If the user specified a new role on the command line (if `role_s'   *
++       * is set), then replace the old role in `context' with this new role. */
++      if( role_s ) {
++	if( context_role_set(context,role_s)) {
++	  fprintf(stderr,"failed to set new role %s\n",role_s);
++	  exit(-1);
++	}
++#ifdef CANTSPELLGDB
++	printf("Your new role is %s\n",context_role_get(context));
++#endif
++      } /* if user specified new role */
++      
++      /* If the user specified a new type on the command line (if `type_s'   *
++       * is set), then replace the old type in `context' with this new type. */
++      if( type_s ) {
++	if( context_type_set(context,type_s)) {
++	  fprintf(stderr,"failed to set new type %s\n",type_s);
++	  exit(-1);
++	}
++#ifdef CANTSPELLGDB
++	printf("Your new type is %s\n",context_type_get(context));
++#endif
++      } /* if user specified new type */
++      
++      /* The second step in creating the new SID is to convert our modified *
++       * `context' structure back to a context string and then to a SID.    */
++      
++      /* Make `context_s' point to a string version of the new `context'.  */
++      if( !(new_context=context_str(context))) {
++	fprintf(stderr,"failed to convert new context to string\n" );
++	exit(-1);
++      }
++      
++#ifdef CANTSPELLGDB
++      printf("Your new context is %s\n",new_context);
++#endif
++      
++      /*
++       *
++       * Step 4: Handle relabeling of the tty.
++       *
++       */
++      
++      /* Fetch TTY information */
++      ttyn=ttyname(0);
++      if (! ( ttyn==NULL || *ttyn=='\0')) {
++	if (getfilecon(ttyn,&tty_context) <0 ) {
++	  fprintf(stderr, "Could not retrieve tty information.\n");
++	} else {
++
++#ifdef CANTSPELLGDB
++	  printf("Your tty %s was labeled with SID %d\n", ttyn, tty_context);
++#endif
++
++	  new_tty_context = NULL;
++	  if (security_compute_relabel(new_context,tty_context,SECCLASS_CHR_FILE,&new_tty_context) < 0)
++	    fprintf(stderr, "Warning!  Could not get new context for %s, not relabeling.\n", ttyn);
++	  else 
++	    {
++
++#ifdef CANTSPELLGDB
++	      printf("Relabeling tty %s to context %s\n", ttyn, new_tty_context);
++#endif
++
++	    /* Relabel it */
++	      if( setfilecon(ttyn,new_tty_context)!=0 ) {
++		fprintf(stderr,"sudo: error: setfilecon on %s to %s",ttyn,new_tty_context);
++	      }
++	      freecon(new_tty_context);
++	    }
++	}
++      }
++    }
++#endif
+     /* Build up custom environment that avoids any nasty bits. */
+     new_environ = rebuild_env(sudo_mode, envp);
+ 
+@@ -414,10 +565,59 @@
+ 	(void) sigaction(SIGCHLD, &saved_sa_chld, NULL);
+ 
+ #ifndef PROFILING
+-	if ((sudo_mode & MODE_BACKGROUND) && fork() > 0)
++	if ((sudo_mode & MODE_BACKGROUND) && fork() > 0) {
++	  exit(0);
++	}
++#ifdef WITH_SELINUX
++	if( is_selinux_enabled() ) {
++	  /* Fork, allowing parent to clean up after shell has executed */
++	  pid_t childPid=fork();
++	  if( childPid<0 ) {
++	    int errsv=errno;
++	    
++	    fprintf(stderr,"sudo: failure forking: %s",strerror(errsv));
++	    exit(-1);
++	  } else if (childPid) {
++	    /* PARENT */
++	    wait(NULL);
++
++#ifdef CANTSPELLGDB
++	    printf("Restoring tty %s back to SID %d\n", ttyn, tty_context);
++#endif
++
++	    /* Cleanup TTY Context */
++	    setfilecon(ttyn,tty_context);
++	    freecon(tty_context);
++	    
++	    /* Done! */
+ 	    exit(0);
+-	else
+-	    EXEC(safe_cmnd, NewArgv);	/* run the command */
++	  }
++	  if (setexeccon(new_context) < 0) {
++	    fprintf(stderr, "Could not set exec context to %s.\n", new_context);
++	    exit(-1);
++	  }
++	  freecon(new_context);
++	  /* Close and reopen descriptors 0 through 2 */
++	  if( close(0) || close(1) || close(2) )
++	    {
++	      fprintf(stderr,"Could not close descriptors.\n");
++	      exit(-1);
++	    }
++	  fd = open(ttyn,O_RDWR);
++	  if (fd != 0) {
++	    exit(-1);
++	  }
++	  fd = open(ttyn,O_RDWR);  
++	  if (fd != 1) {
++	    exit(-1);
++	  }
++	  fd = open(ttyn,O_RDWR);  
++	  if (fd != 2) {
++	    exit(-1);
++	  }
++	}
++#endif
++	EXEC(safe_cmnd, NewArgv);	/* run the command */
+ #else
+ 	exit(0);
+ #endif /* PROFILING */
+@@ -693,6 +893,30 @@
+ 		NewArgv++;
+ 		break;
+ #endif
++#ifdef WITH_SELINUX
++	    case 'r':
++		/* Must have an associated SELinux role. */
++		if (NewArgv[1] == NULL)
++		    usage(1);
++
++		role_s = NewArgv[1];
++
++		/* Shift Argv over and adjust Argc. */
++		NewArgc--;
++		NewArgv++;
++		break;
++	    case 't':
++		/* Must have an associated SELinux type. */
++		if (NewArgv[1] == NULL)
++		    usage(1);
++
++		type_s = NewArgv[1];
++
++		/* Shift Argv over and adjust Argc. */
++		NewArgc--;
++		NewArgv++;
++		break;
++#endif
+ #ifdef HAVE_LOGIN_CAP_H
+ 	    case 'c':
+ 		/* Must have an associated login class. */
+--- sudo-1.6.7p5/sudo.man.in.selinux	2003-04-15 20:39:14.000000000 -0400
++++ sudo-1.6.7p5/sudo.man.in	2003-12-11 17:35:52.000000000 -0500
+@@ -174,7 +174,7 @@
+ .IX Header "SYNOPSIS"
+ \&\fBsudo\fR \fB\-V\fR | \fB\-h\fR | \fB\-l\fR | \fB\-L\fR | \fB\-v\fR | \fB\-k\fR | \fB\-K\fR | \fB\-s\fR |
+ [ \fB\-H\fR ] [\fB\-P\fR ] [\fB\-S\fR ] [ \fB\-b\fR ] | [ \fB\-p\fR \fIprompt\fR ]
+-[ \fB\-c\fR \fIclass\fR|\fI\-\fR ] [ \fB\-a\fR \fIauth_type\fR ]
++[ \fB\-c\fR \fIclass\fR|\fI\-\fR ] [ \fB\-a\fR \fIauth_type\fR ] [\fB\-r\fR \fIrole\fR ] [\fB\-t\fR \fItype\fR ] 
+ [ \fB\-u\fR \fIusername\fR|\fI#uid\fR ] \fIcommand\fR
+ .SH "DESCRIPTION"
+ .IX Header "DESCRIPTION"
+@@ -327,6 +327,16 @@
+ the group vector to the list of groups the target user is in.
+ The real and effective group IDs, however, are still set to match
+ the target user.
++.IP "\-r" 4
++.IX Item "-r"
++The \fB\-r\fR (\fRrole\fR) option causes the new (SELinux) security context to have the role specified by
++\fIROLE\fR.
++.IP "\-t" 4
++.IX Item "-t" 
++The \fB\-t\fR (\fRtype\fR) option causes the new (SELinux) security context to have the have the type (domain)
++specified by
++\fITYPE\fR.
++If no type is specified, the default type is derived from the specified role.
+ .IP "\-S" 4
+ .IX Item "-S"
+ The \fB\-S\fR (\fIstdin\fR) option causes \fBsudo\fR to read the password from
+--- sudo-1.6.7p5/sudoers.selinux	2001-12-16 23:45:52.000000000 -0500
++++ sudo-1.6.7p5/sudoers	2003-10-27 16:57:47.000000000 -0500
+@@ -14,7 +14,8 @@
+ # Defaults specification
+ 
+ # User privilege specification
+-root	ALL=(ALL) ALL
++#You should not use sudo as root in an SELinux environment
++#root	ALL=(ALL) ALL
+ 
+ # Uncomment to allow people in group wheel to run all commands
+ # %wheel	ALL=(ALL)	ALL
