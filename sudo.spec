@@ -2,7 +2,7 @@ Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
 Version:	1.6.3p5
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
@@ -61,7 +61,7 @@ autoconf
 	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
 
-%{__make} CFLAGS="$RPM_OPT_FLAGS"
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -77,8 +77,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pam.d,/var/{log,run/sudo}}
 install %{SOURCE1}  $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo.log
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man{5,8}/* \
-	BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
+gzip -9nf BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
