@@ -6,8 +6,9 @@ Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fosse
 Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
-Version:	1.6.6
-Release:	2
+Version:	1.6.7p2
+Release:	1
+Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
@@ -92,7 +93,7 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 на багатьох машинах.
 
 %prep
-%setup -q
+%setup -q 
 
 %build
 %configure2_13 \
