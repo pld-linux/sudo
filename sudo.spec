@@ -12,6 +12,7 @@ Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
+# Source0-md5:	55d503e5c35bf1ea83d38244e0242aaf
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 URL:		http://www.courtesan.com/sudo/
