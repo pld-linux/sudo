@@ -379,8 +379,8 @@
  .IP "\-S" 4
  .IX Item "-S"
  The \fB\-S\fR (\fIstdin\fR) option causes \fBsudo\fR to read the password from
---- sudo-1.6.8/Makefile.in.orig	2004-05-28 22:27:59.000000000 +0200
-+++ sudo-1.6.8/Makefile.in	2004-08-29 20:49:03.393698912 +0200
+--- sudo-1.6.8p1/Makefile.in.orig	2004-09-15 22:11:22.000000000 +0200
++++ sudo-1.6.8p1/Makefile.in	2004-09-19 12:26:11.212233352 +0200
 @@ -43,7 +43,8 @@
  # Libraries
  LIBS = @LIBS@
@@ -401,17 +401,17 @@
  #### End of system configuration section. ####
  
 @@ -104,7 +105,7 @@
-        parse.lex parse.yacc set_perms.c sigaction.c snprintf.c strcasecmp.c \
-        strerror.c strlcat.c strlcpy.c sudo.c sudo_noexec.c sudo.tab.c \
-        sudo_edit.c testsudoers.c tgetpass.c utime.c visudo.c zero_bytes.c \
--       $(AUTH_SRCS)
-+       $(AUTH_SRCS) sesh.c
+        parse.c parse.lex parse.yacc set_perms.c sigaction.c snprintf.c \
+        strcasecmp.c strerror.c strlcat.c strlcpy.c sudo.c sudo_noexec.c \
+        sudo.tab.c sudo_edit.c testsudoers.c tgetpass.c utimes.c visudo.c \
+-       zero_bytes.c $(AUTH_SRCS)
++       zero_bytes.c $(AUTH_SRCS) sesh.c
  
  AUTH_SRCS = auth/afs.c auth/aix_auth.c auth/bsdauth.c auth/dce.c auth/fwtk.c \
  	    auth/kerb4.c auth/kerb5.c auth/pam.c auth/passwd.c auth/rfc1938.c \
 @@ -126,6 +127,8 @@
  
- VISUDOBJS = visudo.o fileops.o goodpath.o find_path.o $(PARSEOBJS)
+ VISUDOBJS = visudo.o fileops.o gettime.o goodpath.o find_path.o $(PARSEOBJS)
  
 +SESH_OBJS = sesh.o
 +
@@ -425,7 +425,7 @@
 -	  sudoers.pod visudo visudo.cat visudo.man visudo.pod
 +	  sudoers.pod visudo visudo.cat visudo.man visudo.pod sesh
  
- BINSPECIAL= INSTALL.binary Makefile.binary
+ BINSPECIAL= INSTALL.binary Makefile.binary libtool
  
 @@ -177,6 +180,9 @@
  visudo: $(VISUDOBJS) $(LIBOBJS)
@@ -445,8 +445,8 @@
  sudo.o: sudo.c $(SUDODEP) interfaces.h version.h
  interfaces.o: interfaces.c $(SUDODEP) interfaces.h
  testsudoers.o: testsudoers.c $(SUDODEP) parse.h interfaces.h
-@@ -305,6 +312,7 @@
- 	ln -f $(DESTDIR)$(sudodir)/sudo $(DESTDIR)$(sudodir)/sudoedit
+@@ -306,6 +313,7 @@
+ 	ln $(DESTDIR)$(sudodir)/sudo $(DESTDIR)$(sudodir)/sudoedit
  
  	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 0111 -s visudo $(DESTDIR)$(visudodir)/visudo
 +	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 0111 -s sesh $(DESTDIR)$(visudodir)/sesh

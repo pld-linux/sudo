@@ -1,14 +1,14 @@
---- sudo-1.6.8/configure.in.orig	2004-08-29 20:52:29.764325000 +0200
-+++ sudo-1.6.8/configure.in	2004-08-29 21:41:29.198463896 +0200
-@@ -1701,9 +1701,9 @@
+--- sudo-1.6.8p1/configure.in.orig	2004-09-19 12:26:48.379583056 +0200
++++ sudo-1.6.8p1/configure.in	2004-09-19 12:28:18.655858976 +0200
+@@ -1703,9 +1703,9 @@
  AC_CHECK_FUNCS(lockf flock, [break])
  AC_CHECK_FUNCS(waitpid wait3, [break])
  AC_CHECK_FUNCS(innetgr _innetgr, [AC_CHECK_FUNCS(getdomainname) [break]])
 -AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], AC_LIBOBJ(lsearch), -), AC_LIBOBJ(lsearch))])
 +AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, [AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], [AC_LIBOBJ(lsearch)], -)], [AC_LIBOBJ(lsearch)])])
- AC_CHECK_FUNCS(utime, [SUDO_FUNC_UTIME_POSIX], [AC_LIBOBJ(utime)])
--SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH, 1, [Define if you have the `fnmatch' function.]), AC_LIBOBJ(fnmatch))
-+SUDO_FUNC_FNMATCH([AC_DEFINE(HAVE_FNMATCH, 1, [Define if you have the `fnmatch' function.])], [AC_LIBOBJ(fnmatch)])
+ AC_CHECK_FUNCS(utimes, [AC_CHECK_FUNCS(futimes futimesat, [break])], [AC_CHECK_FUNCS(futime) AC_LIBOBJ(utimes)])
+-SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), AC_LIBOBJ(fnmatch))
++SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), [AC_LIBOBJ(fnmatch)])
  SUDO_FUNC_ISBLANK
  AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
  AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
