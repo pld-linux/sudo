@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without  selinux   # do not compile selinux support
+%bcond_without	selinux	# do not compile selinux support
 #
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran el root
