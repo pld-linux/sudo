@@ -7,8 +7,6 @@ Version:	1.6.5p1
 Release:	2
 License:	BSD
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
