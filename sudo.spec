@@ -1,14 +1,14 @@
-Summary:     Allows command execution as root for specified users
-Summary(pl): Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
-Name:        sudo
-Version:     1.5.7p4
-Release:     1
-Copyright:   GPL
-Group:       Utilities/System
-Group(pl):   Narzêdzia/Systemowe
-Source:      ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.Z
-URL:         http://www.courtesan.com/courtesan/products/sudo/
-BuildRoot:   /tmp/%{name}-%{version}-root
+Summary:	Allows command execution as root for specified users
+Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
+Name:		sudo
+Version:	1.5.9p1
+Release:	1
+Copyright:	GPL
+Group:		Utilities/System
+Group(pl):	Narzêdzia/Systemowe
+Source:		ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
+URL:		http://www.courtesan.com/courtesan/products/sudo/
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as the
@@ -33,7 +33,8 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 %setup -q -n %{name}.v%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure \
+CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
+./configure \
 	--prefix=/usr \
 	--sbindir=/usr/sbin \
 	--with-timedir=/var/run \
@@ -72,7 +73,8 @@ make install \
 install sample.pam $RPM_BUILD_ROOT/etc/pam.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo.log
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man{5,8}/*
+gzip -9nf $RPM_BUILD_ROOT/usr/man/man{5,8}/* \
+	BUGS CHANGES HISTORY README TODO TROUBLESHOOTING
 
 chmod -R +r $RPM_BUILD_ROOT/usr
 
@@ -80,16 +82,21 @@ chmod -R +r $RPM_BUILD_ROOT/usr
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
-%doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
-%attr(0400, root, root) %verify(not md5 size mtime) %config(noreplace) /etc/sudoers
-%attr(0600, root, root) %config /etc/pam.d/sudo
-%attr(4111, root, root) /usr/bin/sudo
-%attr(0111, root, root) /usr/sbin/visudo
-%attr(0644, root,  man) /usr/man/man[58]/*
-%attr(0600, root, root) %ghost /var/log/sudo.log
+%defattr(644,root,root,755)
+%doc *.gz sample.sudoers
+%attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) /etc/sudoers
+%attr(0600,root,root) %config /etc/pam.d/sudo
+%attr(4555,root,root) /usr/bin/sudo
+%attr(0555,root,root) /usr/sbin/visudo
+/usr/man/man*/*
+%attr(0600,root,root) %ghost /var/log/sudo.log
 
 %changelog
+* Wed Apr  7 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.5.9p1-1]
+- added gzipping %doc
+- removed man group from man pages.
+
 * Sun Nov 29 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.5.7p2-1]
 - added gzipping man pages,
