@@ -1,8 +1,8 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.6.3p5
-Release:	4
+Version:	1.6.3p6
+Release:	1
 License:	BSD
 Group:		Applications/System
 Group(de):	Applikationen/System
