@@ -5,7 +5,7 @@
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios especМficos ejecuten comandos como se fueran el root
 Summary(ja):	╩ьдЙ╔Ф║╪╔╤╓кю╘╦биу╓нroot╦╒╦б╓Р╣Ж╡д╓╧╓К
-Summary(pl):	Umo©liwia wykonywaniew poleceЯ jako root dla konkretnych u©ytkownikСw
+Summary(pl):	Umo©liwia wykonywanie poleceЯ jako root dla konkretnych u©ytkownikСw
 Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fossem o root
 Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
