@@ -24,9 +24,9 @@ Patch1:		%{name}-ac.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
+%{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
 BuildRequires:	pam-devel
-%{?with_selinux:BuildRequires:	libselinux-devel}
 Requires:	pam >= 0.77.3
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
