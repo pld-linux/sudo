@@ -1,7 +1,7 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.5.9p2
+Version:	1.5.9p4
 Release:	1
 Copyright:	GPL
 Group:		Utilities/System
@@ -11,7 +11,7 @@ Source1:	sudo.pamd
 URL:		http://www.courtesan.com/courtesan/products/sudo/
 BuildRoot:	/tmp/%{name}-%{version}-root
 
-%define	_sysconfdir	/etc
+%define		_sysconfdir	/etc
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as the
@@ -37,10 +37,8 @@ autoryzowany jest opisane w pliku /etc/sudoers.
 
 %build
 autoconf
-CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
-./configure %{_target_platform} \
-	--prefix=%{_prefix} \
-	--sbindir=%{_sbindir} \
+LDFLAGS="-s"; export LDFLAGS
+%configure \
 	--with-timedir=/var/run/sudo \
 	--with-C2 \
 	--with-pam \
