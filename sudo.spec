@@ -1,16 +1,17 @@
 Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
-Version:	1.5.9p4
+Version:	1.6
 Release:	1
 Copyright:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/Systemowe
-Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/cu-sudo.v%{version}.tar.gz
+Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	sudo.pamd
 Patch:		sudo-DESTDIR.patch
 URL:		http://www.courtesan.com/courtesan/products/sudo/
 BuildRoot:	/tmp/%{name}-%{version}-root
+Obsoletes:	cu-sudo
 
 %define		_sysconfdir	/etc
 
@@ -34,7 +35,7 @@ To kto mo¿e wykonywaæ konkretne polecenia i w jaki sposób ma byæ
 autoryzowany jest opisane w pliku /etc/sudoers.
 
 %prep
-%setup -q -n %{name}.v%{version}
+%setup -q
 %patch -p1
 
 %build
@@ -45,7 +46,7 @@ LDFLAGS="-s"; export LDFLAGS
 	--with-C2 \
 	--with-pam \
 	--with-logging=both \
-	--with-logfac=LOG_AUTH \
+	--with-logfac=auth \
 	--with-logpath=/var/log/sudo.log \
 	--with-message=full \
 	--with-ignore-dot \
