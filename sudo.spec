@@ -94,7 +94,7 @@ Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
 на багатьох машинах.
 
 %prep
-%setup -q 
+%setup -q
 
 %build
 %configure2_13 \
