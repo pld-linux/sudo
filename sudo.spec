@@ -2,7 +2,7 @@ Summary:	Allows command execution as root for specified users
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Name:		sudo
 Version:	1.6.3p7
-Release:	2
+Release:	3
 License:	BSD
 Group:		Applications/System
 Group(de):	Applikationen/System
@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.gz sample.sudoers
-%attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(0440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(0600,root,root) %config %verify(not size mtime md5) %{_sysconfdir}/pam.d/sudo
 %attr(4555,root,root) %{_bindir}/sudo
 %attr(0555,root,root) %{_sbindir}/visudo
