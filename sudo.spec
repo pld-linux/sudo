@@ -19,6 +19,7 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf
 BuildRequires:	pam-devel
 BuildRequires:	/bin/vi
+Requires:	pam >= 0.77.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
 
