@@ -13,6 +13,8 @@ Patch0:		%{name}-DESTDIR.patch
 URL:		http://www.courtesan.com/sudo/
 BuildRequires:	pam-devel
 BuildRequires:	/bin/vi
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	cu-sudo
 
@@ -41,6 +43,7 @@ opisane w pliku /etc/sudoers.
 %patch -p1
 
 %build
+aclocal
 autoconf
 %configure \
 	--with-timedir=/var/run/sudo \
