@@ -10,13 +10,13 @@ Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fosse
 Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
-Version:	1.6.8
+Version:	1.6.8p1
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	94e0657c46e129cf6f1fe7ee313d6636
+# Source0-md5:	7fa9649f327d2e92eb1a73da537759d5
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
