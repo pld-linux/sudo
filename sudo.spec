@@ -5,7 +5,7 @@ Version:	1.6.3
 Release:	1
 License:	GPL
 Group:		Utilities/System
-Group(pl):	Narzêdzia/Systemowe
+Group(pl):	Narzêdzia/System
 Source0:	ftp://ftp.cs.colorado.edu/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	sudo.pamd
 Patch:		sudo-DESTDIR.patch
