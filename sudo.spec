@@ -52,7 +52,7 @@ CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s" \
 	--with-csops-insults \
 	--with-hal-insults \
 	--with-goons-insults \
-	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
+	--with-secure-path="/bin:/sbin:%{_bindir}:/usr/sbin" \
 	--with-loglen=320 \
 
 make CFLAGS="$RPM_OPT_FLAGS"
@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc *.gz sample.sudoers
 %attr(0400,root,root) %verify(not md5 size mtime) %config(noreplace) /etc/sudoers
 %attr(0600,root,root) %config /etc/pam.d/sudo
-%attr(4555,root,root) /usr/bin/sudo
+%attr(4555,root,root) %{_bindir}/sudo
 %attr(0555,root,root) /usr/sbin/visudo
 %{_mandir}/man*/*
 %attr(0600,root,root) %ghost /var/log/sudo.log
