@@ -1,12 +1,12 @@
-diff -Nru sudo.v1.5.9p4/Makefile.in sudo.v1.5.9p4.new/Makefile.in
---- sudo.v1.5.9p4/Makefile.in	Tue Mar 30 23:45:27 1999
-+++ sudo.v1.5.9p4.new/Makefile.in	Mon Nov 15 01:48:34 1999
-@@ -203,27 +203,27 @@
+diff -Nru sudo-1.6.1/Makefile.in sudo-1.6.1.new/Makefile.in
+--- sudo-1.6.1/Makefile.in	Sun Dec  5 03:18:45 1999
++++ sudo-1.6.1.new/Makefile.in	Sat Dec 11 12:56:48 1999
+@@ -272,27 +272,27 @@
  install: install-dirs install-binaries install-sudoers install-man
  
  install-dirs:
--	$(srcdir)/mkinstalldirs $(sudodir) $(visudodir) $(sudoersdir) $(mandir8) $(mandir5)
-+	$(srcdir)/mkinstalldirs $(DESTDIR)$(sudodir) $(DESTDIR)$(visudodir) $(DESTDIR)$(sudoersdir) $(DESTDIR)$(mandir8) $(DESTDIR)$(mandir5)
+-	$(SHELL) $(srcdir)/mkinstalldirs $(sudodir) $(visudodir) $(sudoersdir) $(mandir8) $(mandir5)
++	$(SHELL) $(srcdir)/mkinstalldirs $(DESTDIR)$(sudodir) $(DESTDIR)$(visudodir) $(DESTDIR)$(sudoersdir) $(DESTDIR)$(mandir8) $(DESTDIR)$(mandir5)
  
  install-binaries: $(PROGS)
 -	$(INSTALL) -o $(install_uid) -g $(install_gid) -m 4111 -s sudo $(sudodir)/sudo
