@@ -3,7 +3,7 @@ Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran e
 Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
 Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Name:		sudo
-Version:	1.6.5p1
+Version:	1.6.5p2
 Release:	2
 License:	BSD
 Group:		Applications/System
