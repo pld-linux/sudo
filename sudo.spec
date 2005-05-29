@@ -11,7 +11,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p8
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -25,6 +25,9 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 %{?with_selinux:BuildRequires:	libselinux-devel}
+BuildRequires:	heimdal-devel
+BuildRequires:	openldap-devel
+BuildRequires:	skey-devel >= 2.2-11
 BuildRequires:	libtool
 BuildRequires:	pam-devel
 Requires:	pam >= 0.77.3
@@ -118,6 +121,7 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
+	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-logging=both \
@@ -125,15 +129,13 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
-	--with-insults \
-	--with-all-insults \
-	--with-classic-insults \
-	--with-csops-insults \
-	--with-hal-insults \
-	--with-goons-insults \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
-	--disable-saved-ids
+	--disable-saved-ids \
+	--with-kerb5 \
+	--with-ldap \
+	--with-skey \
+	--with-long-otp-prompt
 
 %{__make}
 
