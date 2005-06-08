@@ -11,7 +11,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p8
-Release:	3
+Release:	4
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -119,6 +119,9 @@ cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
+%ifarch sparc sparc64
+export ac_cv_func_utimes=no
+%endif
 %configure \
 	NROFFPROG=nroff \
 	--with-incpath=/usr/include/security \
