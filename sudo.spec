@@ -119,7 +119,10 @@ cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
-%ifarch sparc sparc64
+# sparc64 2.4.x kernels have buggy sys32_utimes(somefile, NULL) syscall
+# it's fixed in >= 2.4.31-0.3, but keep workaround not to require very
+# fresh kernel
+%ifarch sparc sparcv9
 export ac_cv_func_utimes=no
 %endif
 %configure \
