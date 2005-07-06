@@ -11,7 +11,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p9
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -25,7 +25,7 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 %{?with_selinux:BuildRequires:	libselinux-devel}
-BuildRequires:	heimdal-devel
+BuildRequires:	heimdal-devel >= 0.7
 BuildRequires:	openldap-devel
 BuildRequires:	skey-devel >= 2.2-11
 BuildRequires:	libtool
