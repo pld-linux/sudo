@@ -1,9 +1,9 @@
 #
 # Conditional build:
 %bcond_without	selinux		# build without SELinux support
-%bcond_without	skey		# disable skey (onetime passwords
-%bcond_without	heimdal		# disable kerberos
-%bcond_without	ldap		# disable ldap
+%bcond_without	skey		# disable skey (onetime passwords) support
+%bcond_without	heimdal		# disable Kerberos support
+%bcond_without	ldap		# disable LDAP support
 #
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran el root
