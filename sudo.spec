@@ -1,6 +1,9 @@
 #
 # Conditional build:
 %bcond_without	selinux		# build without SELinux support
+%bcond_without	skey		# disable skey (onetime passwords
+%bcond_without	heimdal		# disable kerberos
+%bcond_without	ldap		# disable ldap
 #
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran el root
@@ -25,9 +28,9 @@ URL:		http://www.courtesan.com/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 %{?with_selinux:BuildRequires:	libselinux-devel}
-BuildRequires:	heimdal-devel >= 0.7
-BuildRequires:	openldap-devel
-BuildRequires:	skey-devel >= 2.2-11
+%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_ldap:BuildRequires:	openldap-devel}
+%{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 BuildRequires:	libtool
 BuildRequires:	pam-devel
 Requires:	pam >= 0.77.3
@@ -138,9 +141,9 @@ export ac_cv_func_utimes=no
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
-	--with-kerb5 \
-	--with-ldap \
-	--with-skey \
+	--with%{?with_heimdal:out}-kerb5 \
+	--with%{?with_ldap:out}-ldap \
+	--with%{?with_skey:out}-skey \
 	--with-long-otp-prompt
 
 %{__make}
