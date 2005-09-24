@@ -141,9 +141,9 @@ export ac_cv_func_utimes=no
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
-	--with%{?with_heimdal:out}-kerb5 \
-	--with%{?with_ldap:out}-ldap \
-	--with%{?with_skey:out}-skey \
+	--with%{!?with_heimdal:out}-kerb5 \
+	--with%{!?with_ldap:out}-ldap \
+	--with%{!?with_skey:out}-skey \
 	--with-long-otp-prompt
 
 %{__make}
