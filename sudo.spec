@@ -27,12 +27,12 @@ Patch1:		%{name}-ac.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
-%{?with_selinux:BuildRequires:	libselinux-devel}
 %{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
-%{?with_ldap:BuildRequires:	openldap-devel}
-%{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
+%{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
+%{?with_ldap:BuildRequires:	openldap-devel}
 BuildRequires:	pam-devel
+%{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 Requires:	pam >= 0.77.3
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -173,8 +173,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
-%attr(440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
-%attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
+%attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
