@@ -14,7 +14,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p12
-Release:	3
+Release:	4
 Epoch:		1
 License:	BSD
 Group:		Applications/System
