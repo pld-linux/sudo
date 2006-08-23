@@ -1,31 +1,38 @@
 #
 # Conditional build:
-%bcond_without  selinux   # do not compile selinux support
+%bcond_without	selinux		# build without SELinux support
+%bcond_without	skey		# disable skey (onetime passwords) support
+%bcond_without	heimdal		# disable Kerberos support
+%bcond_without	ldap		# disable LDAP support
 #
 Summary:	Allows command execution as root for specified users
 Summary(es):	Permite que usuarios específicos ejecuten comandos como se fueran el root
 Summary(ja):	»ØÄê¥æ¡¼¥¶¤ËÀ©¸ÂÉÕ¤Îroot¸¢¸Â¤òµö²Ä¤¹¤ë
-Summary(pl):	Umo¿liwia wykonywaniew poleceñ jako root dla konkretnych u¿ytkowników
+Summary(pl):	Umo¿liwia wykonywanie poleceñ jako root dla konkretnych u¿ytkowników
 Summary(pt_BR):	Permite que usuários específicos executem comandos como se fossem o root
 Summary(ru):	ðÏÚ×ÏÌÑÅÔ ÏÐÒÅÄÅÌÅÎÎÙÍ ÐÏÌØÚÏ×ÁÔÅÌÑÍ ÉÓÐÏÌÎÑÔØ ËÏÍÁÎÄÙ ÏÔ ÉÍÅÎÉ root
 Summary(uk):	äÏÚ×ÏÌÑ¤ ×ËÁÚÁÎÉÍ ËÏÒÉÓÔÕ×ÁÞÁÍ ×ÉËÏÎÕ×ÁÔÉ ËÏÍÁÎÄÉ ×¦Ä ¦ÍÅÎ¦ root
 Name:		sudo
-Version:	1.6.8p1
-Release:	1
+Version:	1.6.8p12
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
-Source0:	ftp://ftp.courtesan.com/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	7fa9649f327d2e92eb1a73da537759d5
+Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
+# Source0-md5:	b29893c06192df6230dd5f340f3badf5
 Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
 Patch1:		%{name}-ac.patch
-URL:		http://www.courtesan.com/sudo/
+URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
-BuildRequires:	pam-devel
+%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
 %{?with_selinux:BuildRequires:	libselinux-devel}
+BuildRequires:	libtool
+%{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
+BuildRequires:	pam-devel
+%{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 Requires:	pam >= 0.77.3
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -115,8 +122,15 @@ cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
+# sparc64 2.4.x kernels have buggy sys32_utimes(somefile, NULL) syscall
+# it's fixed in >= 2.4.31-0.3, but keep workaround not to require very
+# fresh kernel
+%ifarch sparc sparcv9
+export ac_cv_func_utimes=no
+%endif
 %configure \
 	NROFFPROG=nroff \
+	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-logging=both \
@@ -124,15 +138,14 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
-	--with-insults \
-	--with-all-insults \
-	--with-classic-insults \
-	--with-csops-insults \
-	--with-hal-insults \
-	--with-goons-insults \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
-	--disable-saved-ids
+	--disable-saved-ids \
+	--with%{!?with_heimdal:out}-kerb5 \
+	--with%{!?with_ldap:out}-ldap \
+	--with%{!?with_skey:out}-skey \
+	--with-long-otp-prompt \
+	--with-sendmail=/usr/sbin/sendmail
 
 %{__make}
 
@@ -161,11 +174,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
-%attr(440,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sudoers
-%attr(600,root,root) %config(noreplace) %verify(not size mtime md5) /etc/pam.d/sudo
+%attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
-%attr(755,root,root) %{_sbindir}/sesh
+%{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
 %attr(755,root,root) %{_sbindir}/visudo
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man*/*
