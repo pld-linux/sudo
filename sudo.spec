@@ -14,7 +14,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p12
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -144,7 +144,8 @@ export ac_cv_func_utimes=no
 	--with%{!?with_heimdal:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
-	--with-long-otp-prompt
+	--with-long-otp-prompt \
+	--with-sendmail=/usr/sbin/sendmail
 
 %{__make}
 
