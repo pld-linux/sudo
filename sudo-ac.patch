@@ -1,5 +1,30 @@
---- sudo-1.6.8p1/configure.in.orig	2004-09-19 12:26:48.379583056 +0200
-+++ sudo-1.6.8p1/configure.in	2004-09-19 12:28:18.655858976 +0200
+diff -Nur sudo-1.6.8p12.orig/acinclude.m4 sudo-1.6.8p12.ac/acinclude.m4
+--- sudo-1.6.8p12.orig/acinclude.m4	2004-09-07 20:14:51.000000000 +0300
++++ sudo-1.6.8p12.ac/acinclude.m4	2006-09-05 16:50:19.000000000 +0300
+@@ -224,9 +224,9 @@
+ rm -f core core.* *.core])dnl
+ AC_MSG_RESULT($sudo_cv_func_fnmatch)
+ if test $sudo_cv_func_fnmatch = yes; then
+-  [$1]
++  $1
+ else
+-  [$2]
++  $2
+ fi
+ ])
+ 
+diff -Nur sudo-1.6.8p12.orig/configure.in sudo-1.6.8p12.ac/configure.in
+--- sudo-1.6.8p12.orig/configure.in	2006-09-05 16:50:19.000000000 +0300
++++ sudo-1.6.8p12.ac/configure.in	2006-09-05 16:51:03.000000000 +0300
+@@ -1609,7 +1609,7 @@
+     AC_CHECK_FUNCS(getspnam, [CHECKSHADOW="false"], [AC_CHECK_LIB(gen, getspnam, AC_DEFINE(HAVE_GETSPNAM) [SUDO_LIBS="${SUDO_LIBS} -lgen"; LIBS="${LIBS} -lgen"])])
+ fi
+ if test "$CHECKSHADOW" = "true"; then
+-    AC_CHECK_FUNC(getprpwnam, [AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1], AC_CHECK_LIB(sec, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsec"; LIBS="${LIBS} -lsec"], AC_CHECK_LIB(security, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsecurity"; LIBS="${LIBS} -lsecurity"], AC_CHECK_LIB(prot, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lprot"; LIBS="${LIBS} -lprot"])))])
++    AC_CHECK_FUNC(getprpwnam, [AC_DEFINE(HAVE_GETPRPWNAM) AC_CHECK_LIB(sec, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsec"; LIBS="${LIBS} -lsec"], AC_CHECK_LIB(security, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsecurity"; LIBS="${LIBS} -lsecurity"], AC_CHECK_LIB(prot, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lprot"; LIBS="${LIBS} -lprot"]))) [CHECKSHADOW="false"; SECUREWARE=1]])
+ fi
+ 
+ dnl
 @@ -1703,9 +1703,9 @@
  AC_CHECK_FUNCS(lockf flock, [break])
  AC_CHECK_FUNCS(waitpid wait3, [break])
@@ -12,22 +37,9 @@
  SUDO_FUNC_ISBLANK
  AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
  AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
---- sudo-1.6.8/acinclude.m4.orig	2004-05-17 22:18:36.000000000 +0200
-+++ sudo-1.6.8/acinclude.m4	2004-08-29 21:41:42.727407184 +0200
-@@ -248,9 +248,9 @@
- rm -f core core.* *.core])dnl
- AC_MSG_RESULT($sudo_cv_func_fnmatch)
- if test $sudo_cv_func_fnmatch = yes; then
--  [$1]
-+  $1
- else
--  [$2]
-+  $2
- fi
- ])
- 
---- sudo-1.6.8/Makefile.in.orig	2004-08-29 21:54:19.758320000 +0200
-+++ sudo-1.6.8/Makefile.in	2004-08-29 22:12:19.986101408 +0200
+diff -Nur sudo-1.6.8p12.orig/Makefile.in sudo-1.6.8p12.ac/Makefile.in
+--- sudo-1.6.8p12.orig/Makefile.in	2006-09-05 16:50:19.000000000 +0300
++++ sudo-1.6.8p12.ac/Makefile.in	2006-09-05 16:50:19.000000000 +0300
 @@ -187,7 +187,7 @@
  	$(CC) -o $@ $(TESTOBJS) $(LIBOBJS) $(LDFLAGS) $(LIBS) $(NET_LIBS)
  
