@@ -14,7 +14,7 @@ Summary(ru):	Позволяет определенным пользователям исполнять команды от имени roo
 Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
 Name:		sudo
 Version:	1.6.8p12
-Release:	6
+Release:	7
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -33,7 +33,7 @@ BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 BuildRequires:	pam-devel
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	pam >= 0.77.3
+Requires:	pam >= 0.99.7.1
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
