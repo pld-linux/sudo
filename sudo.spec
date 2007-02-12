@@ -6,12 +6,12 @@
 %bcond_without	ldap		# disable LDAP support
 #
 Summary:	Allows command execution as root for specified users
-Summary(es):	Permite que usuarios especМficos ejecuten comandos como se fueran el root
-Summary(ja):	╩ьдЙ╔Ф║╪╔╤╓кю╘╦биу╓нroot╦╒╦б╓Р╣Ж╡д╓╧╓К
-Summary(pl):	Umo©liwia wykonywanie poleceЯ jako root dla konkretnych u©ytkownikСw
-Summary(pt_BR):	Permite que usuАrios especМficos executem comandos como se fossem o root
-Summary(ru):	Позволяет определенным пользователям исполнять команды от имени root
-Summary(uk):	Дозволя╓ вказаним користувачам виконувати команди в╕д ╕мен╕ root
+Summary(es.UTF-8):   Permite que usuarios especц╜ficos ejecuten comandos como se fueran el root
+Summary(ja.UTF-8):   Ф▄┤Е╝ Ц┐╕Ц┐╪Ц┌╤Ц│╚Е┬╤И≥░Д╩≤Ц│╝rootФ╗╘И≥░Ц┌▓Х╗╠Е▐╞Ц│≥Ц┌▀
+Summary(pl.UTF-8):   Umoе╪liwia wykonywanie poleceе└ jako root dla konkretnych uе╪ytkownikцЁw
+Summary(pt_BR.UTF-8):   Permite que usuц║rios especц╜ficos executem comandos como se fossem o root
+Summary(ru.UTF-8):   п÷п╬п╥п╡п╬п╩я▐п╣я┌ п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╪ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐п╪ п╦я│п©п╬п╩п╫я▐я┌я▄ п╨п╬п╪п╟п╫п╢я▀ п╬я┌ п╦п╪п╣п╫п╦ root
+Summary(uk.UTF-8):   п■п╬п╥п╡п╬п╩я▐я■ п╡п╨п╟п╥п╟п╫п╦п╪ п╨п╬я─п╦я│я┌я┐п╡п╟я┤п╟п╪ п╡п╦п╨п╬п╫я┐п╡п╟я┌п╦ п╨п╬п╪п╟п╫п╢п╦ п╡я√п╢ я√п╪п╣п╫я√ root
 Name:		sudo
 Version:	1.6.8p12
 Release:	7
@@ -48,63 +48,63 @@ stamp without running a command. The password prompt itself will also
 time out if the password is not entered with N minutes (again, this is
 defined at installation time and defaults to 5 minutes).
 
-%description -l es
+%description -l es.UTF-8
 Sudo (superuser do) permite que el administrador del sistema otorga a
 ciertos usuarios (o grupos de usuarios) la habilidad para ejecutar
 algunos (o todos) comandos como root, registrando todos los comandos y
 argumentos. Sudo opera en una base por comando, no siendo un
 substituto para la shell.
 
-%description -l ja
+%description -l ja.UTF-8
 sudo (superuser do)
-╓х╓о╔╥╔╧╔ф╔Ю╢имЩ╪т╓╛║╒©╝мя╓г╓╜╓К╔Ф║╪╔╤(╓ч╓©╓о╔╟╔К║╪╔в)╓кбп
-╓╥╓ф║╒╓╓╓╞╓д╓╚(╓Б╓╥╓╞╓оа╢╓ф)╓н╔Ё╔ч╔С╔и╓Р root
-╓х╓╥╓ф╪б╧т╓г╓╜╓К╓Х╓╕║╒╓╫╓н╔Ё╔ч╔С
-╔и╓н╪б╧тмЗнР╓н╔М╔╟╓Р╓х╓Й╓д╓д╣Ж╡д╓╧╓К╩еах╓ъ╓г╓╧║ёsudo
-╓о╔Ё╔ч╔С╔и╟Л╧тц╠╟л╓гф╟╨Н
-╓╥╓ч╓╧║ё╔╥╔╖╔К╓нцж╓╜╢╧╓╗╓г╓о╓╒╓Й╓ч╓╩╓С║ё╟й╡╪╓н╣║г╫╓РфБб╒╓╥╓ф╓╓╓ч╓╧║ё╔ш╔╧╔хц╠╟л
-╓г║╒╓╫╓н╔Ё╔ч╔С╔и╓Р╪б╧т╡дг╫╓й╔Ф║╪╔╤╓Рю╘╦б╓╧╓К╣║г╫║╒Ёф╔Ё╔ч╔С╔и╓к╓д╓╓╓ф╓н(ц╞╓╛╓й
-╓к╓Р╪б╧т╓╥╓©╓╚╓н╨╞юв╓Р╩д╓╧╓©╓А╓н)к╜иы╓й╔М╔╝╔С╔╟╣║г╫║╒sudo
-╔Ё╔ч╔С╔и╓н╔©╔╓╔Ю╔╒╔╕
-╔х╩Ч╢ж╓РюъдЙ╡дг╫║╒йё©Т╓н╔ч╔╥╔С╓гф╠╟Л╓нюъдЙ╔у╔║╔╓╔К(sudoers)╓Р╤╕м╜╓╧╓К╣║г╫║╒╓╛
-╓╒╓Й╓ч╓╧║ё
+Ц│╗Ц│╞Ц┌╥Ц┌╧Ц┐├Ц┐═Г╝║Г░├Х─┘Ц│▄Ц─│Д©║Г■╗Ц│╖Ц│█Ц┌▀Ц┐╕Ц┐╪Ц┌╤(Ц│╬Ц│÷Ц│╞Ц┌╟Ц┐╚Ц┐╪Ц┐≈)Ц│╚Е╞╬
+Ц│≈Ц│╕Ц─│Ц│└Ц│▐Ц│╓Ц│▀(Ц┌┌Ц│≈Ц│▐Ц│╞Е┘╗Ц│╕)Ц│╝Ц┌ЁЦ┐·Ц┐ЁЦ┐┴Ц┌▓ root
+Ц│╗Ц│≈Ц│╕Е╝÷Х║▄Ц│╖Ц│█Ц┌▀Ц┌┬Ц│├Ц─│Ц│²Ц│╝Ц┌ЁЦ┐·Ц┐Ё
+Ц┐┴Ц│╝Е╝÷Х║▄Е╠╔Ф╜╢Ц│╝Ц┐╜Ц┌╟Ц┌▓Ц│╗Ц┌┼Ц│╓Ц│╓Х╗╠Е▐╞Ц│≥Ц┌▀Д╩∙Г╣└Ц│©Ц│╖Ц│≥Ц─┌sudo
+Ц│╞Ц┌ЁЦ┐·Ц┐ЁЦ┐┴Д╦─Х║▄Е█≤Д╫█Ц│╖Е▀∙Д╫°
+Ц│≈Ц│╬Ц│≥Ц─┌Ц┌╥Ц┌╖Ц┐╚Ц│╝Г╫╝Ц│█Ф▐⌡Ц│┬Ц│╖Ц│╞Ц│┌Ц┌┼Ц│╬Ц│⌡Ц┌⌠Ц─┌Д╩╔Д╦▀Ц│╝Ф╘÷Х┐╫Ц┌▓Е├┘Х■╣Ц│≈Ц│╕Ц│└Ц│╬Ц│≥Ц─┌Ц┐⌡Ц┌╧Ц┐┬Е█≤Д╫█
+Ц│╖Ц─│Ц│²Ц│╝Ц┌ЁЦ┐·Ц┐ЁЦ┐┴Ц┌▓Е╝÷Х║▄Е▐╞Х┐╫Ц│╙Ц┐╕Ц┐╪Ц┌╤Ц┌▓Е┬╤И≥░Ц│≥Ц┌▀Ф╘÷Х┐╫Ц─│Е░└Ц┌ЁЦ┐·Ц┐ЁЦ┐┴Ц│╚Ц│╓Ц│└Ц│╕Ц│╝(Х╙╟Ц│▄Ц│╙
+Ц│╚Ц┌▓Е╝÷Х║▄Ц│≈Ц│÷Ц│▀Ц│╝Г≈∙Х╥║Ц┌▓Ф╝▀Ц│≥Ц│÷Ц┌│Ц│╝)Х╠┼Е╞▄Ц│╙Ц┐╜Ц┌╝Ц┐ЁЦ┌╟Ф╘÷Х┐╫Ц─│sudo
+Ц┌ЁЦ┐·Ц┐ЁЦ┐┴Ц│╝Ц┌©Ц┌╓Ц┐═Ц┌╒Ц┌╕
+Ц┐┬Ф≥┌И√⌠Ц┌▓Х╗╜Е╝ Е▐╞Х┐╫Ц─│Х╓┤Ф∙╟Ц│╝Ц┐·Ц┌╥Ц┐ЁЦ│╖Е░▄Д╦─Ц│╝Х╗╜Е╝ Ц┐∙Ц┌║Ц┌╓Ц┐╚(sudoers)Ц┌▓Е┘╠Ф°┴Ц│≥Ц┌▀Ф╘÷Х┐╫Ц─│Ц│▄
+Ц│┌Ц┌┼Ц│╬Ц│≥Ц─┌
 
-%description -l pl
-Sudo (superuser do) umo©liwia wykonywanie konkretnych poleceЯ jako
-root dla wyspecyfikowanych u©ytkownikСw (rzeczywiste i efektywne
-uid/gid podczas wykonywania tych programСw jest 0). To kto mo©e
-wykonywaФ konkretne polecenia i w jaki sposСb ma byФ autoryzowany jest
+%description -l pl.UTF-8
+Sudo (superuser do) umoе╪liwia wykonywanie konkretnych poleceе└ jako
+root dla wyspecyfikowanych uе╪ytkownikцЁw (rzeczywiste i efektywne
+uid/gid podczas wykonywania tych programцЁw jest 0). To kto moе╪e
+wykonywaд┤ konkretne polecenia i w jaki sposцЁb ma byд┤ autoryzowany jest
 opisane w pliku /etc/sudoers.
 
-%description -l pt_BR
-Sudo (superuser do) permite que o administrador do sistema dЙ a certos
-usuАrios (ou grupos de usuАrios) a habilidade para rodar alguns (ou
+%description -l pt_BR.UTF-8
+Sudo (superuser do) permite que o administrador do sistema dц╙ a certos
+usuц║rios (ou grupos de usuц║rios) a habilidade para rodar alguns (ou
 todos) comandos como root, registrando todos os comandos e argumentos.
-Sudo opera numa base por comando, nЦo sendo um substituto para a
+Sudo opera numa base por comando, nцёo sendo um substituto para a
 shell.
 
-%description -l ru
-Sudo (superuser do) позволяет системному администратору предоставлять
-определенным пользователям (или их группам) возможность исполнять
-некоторые (или все) команды с правами root, при этом протоколируя все
-команды и аргументы. Sudo работает с отдельными командами, это не
-замена командной оболочки (shell). Некоторые из возможностей sudo:
-ограничение того, какие команды пользователь может запускать в
-зависимости от хоста; полное протоколирование каждой команды;
-настраиваемое время, на протяжении которого sudo помнит пароль;
-использование одного конфигурационного файла (sudoers) на многих
-машинах.
+%description -l ru.UTF-8
+Sudo (superuser do) п©п╬п╥п╡п╬п╩я▐п╣я┌ я│п╦я│я┌п╣п╪п╫п╬п╪я┐ п╟п╢п╪п╦п╫п╦я│я┌я─п╟я┌п╬я─я┐ п©я─п╣п╢п╬я│я┌п╟п╡п╩я▐я┌я▄
+п╬п©я─п╣п╢п╣п╩п╣п╫п╫я▀п╪ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐п╪ (п╦п╩п╦ п╦я┘ пЁя─я┐п©п©п╟п╪) п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п╦я│п©п╬п╩п╫я▐я┌я▄
+п╫п╣п╨п╬я┌п╬я─я▀п╣ (п╦п╩п╦ п╡я│п╣) п╨п╬п╪п╟п╫п╢я▀ я│ п©я─п╟п╡п╟п╪п╦ root, п©я─п╦ я█я┌п╬п╪ п©я─п╬я┌п╬п╨п╬п╩п╦я─я┐я▐ п╡я│п╣
+п╨п╬п╪п╟п╫п╢я▀ п╦ п╟я─пЁя┐п╪п╣п╫я┌я▀. Sudo я─п╟п╠п╬я┌п╟п╣я┌ я│ п╬я┌п╢п╣п╩я▄п╫я▀п╪п╦ п╨п╬п╪п╟п╫п╢п╟п╪п╦, я█я┌п╬ п╫п╣
+п╥п╟п╪п╣п╫п╟ п╨п╬п╪п╟п╫п╢п╫п╬п╧ п╬п╠п╬п╩п╬я┤п╨п╦ (shell). п²п╣п╨п╬я┌п╬я─я▀п╣ п╦п╥ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌п╣п╧ sudo:
+п╬пЁя─п╟п╫п╦я┤п╣п╫п╦п╣ я┌п╬пЁп╬, п╨п╟п╨п╦п╣ п╨п╬п╪п╟п╫п╢я▀ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄ п╪п╬п╤п╣я┌ п╥п╟п©я┐я│п╨п╟я┌я▄ п╡
+п╥п╟п╡п╦я│п╦п╪п╬я│я┌п╦ п╬я┌ я┘п╬я│я┌п╟; п©п╬п╩п╫п╬п╣ п©я─п╬я┌п╬п╨п╬п╩п╦я─п╬п╡п╟п╫п╦п╣ п╨п╟п╤п╢п╬п╧ п╨п╬п╪п╟п╫п╢я▀;
+п╫п╟я│я┌я─п╟п╦п╡п╟п╣п╪п╬п╣ п╡я─п╣п╪я▐, п╫п╟ п©я─п╬я┌я▐п╤п╣п╫п╦п╦ п╨п╬я┌п╬я─п╬пЁп╬ sudo п©п╬п╪п╫п╦я┌ п©п╟я─п╬п╩я▄;
+п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ п╬п╢п╫п╬пЁп╬ п╨п╬п╫я└п╦пЁя┐я─п╟я├п╦п╬п╫п╫п╬пЁп╬ я└п╟п╧п╩п╟ (sudoers) п╫п╟ п╪п╫п╬пЁп╦я┘
+п╪п╟я┬п╦п╫п╟я┘.
 
-%description -l uk
-Sudo (superuser do) дозволя╓ системному адм╕н╕страторов╕ надати певним
-користувачам (чи ╖х групам) можлив╕сть виконувати деяк╕ (чи вс╕)
-команди з правами root, при цьому протоколюючи вс╕ команди та
-аргументи. Sudo працю╓ з окремими командами, це не зам╕на командно╖
-оболонки (shell). Деяк╕ з можливостей sudo: обмеження того, як╕
-команди користувач може запускати в залежност╕ в╕д хоста; повне
-протоколювання кожно╖ команди; настроюваний час, на протяз╕ якого sudo
-пам'ята╓ пароль; використання одного конф╕гурац╕йного файлу (sudoers)
-на багатьох машинах.
+%description -l uk.UTF-8
+Sudo (superuser do) п╢п╬п╥п╡п╬п╩я▐я■ я│п╦я│я┌п╣п╪п╫п╬п╪я┐ п╟п╢п╪я√п╫я√я│я┌я─п╟я┌п╬я─п╬п╡я√ п╫п╟п╢п╟я┌п╦ п©п╣п╡п╫п╦п╪
+п╨п╬я─п╦я│я┌я┐п╡п╟я┤п╟п╪ (я┤п╦ я≈я┘ пЁя─я┐п©п╟п╪) п╪п╬п╤п╩п╦п╡я√я│я┌я▄ п╡п╦п╨п╬п╫я┐п╡п╟я┌п╦ п╢п╣я▐п╨я√ (я┤п╦ п╡я│я√)
+п╨п╬п╪п╟п╫п╢п╦ п╥ п©я─п╟п╡п╟п╪п╦ root, п©я─п╦ я├я▄п╬п╪я┐ п©я─п╬я┌п╬п╨п╬п╩я▌я▌я┤п╦ п╡я│я√ п╨п╬п╪п╟п╫п╢п╦ я┌п╟
+п╟я─пЁя┐п╪п╣п╫я┌п╦. Sudo п©я─п╟я├я▌я■ п╥ п╬п╨я─п╣п╪п╦п╪п╦ п╨п╬п╪п╟п╫п╢п╟п╪п╦, я├п╣ п╫п╣ п╥п╟п╪я√п╫п╟ п╨п╬п╪п╟п╫п╢п╫п╬я≈
+п╬п╠п╬п╩п╬п╫п╨п╦ (shell). п■п╣я▐п╨я√ п╥ п╪п╬п╤п╩п╦п╡п╬я│я┌п╣п╧ sudo: п╬п╠п╪п╣п╤п╣п╫п╫я▐ я┌п╬пЁп╬, я▐п╨я√
+п╨п╬п╪п╟п╫п╢п╦ п╨п╬я─п╦я│я┌я┐п╡п╟я┤ п╪п╬п╤п╣ п╥п╟п©я┐я│п╨п╟я┌п╦ п╡ п╥п╟п╩п╣п╤п╫п╬я│я┌я√ п╡я√п╢ я┘п╬я│я┌п╟; п©п╬п╡п╫п╣
+п©я─п╬я┌п╬п╨п╬п╩я▌п╡п╟п╫п╫я▐ п╨п╬п╤п╫п╬я≈ п╨п╬п╪п╟п╫п╢п╦; п╫п╟я│я┌я─п╬я▌п╡п╟п╫п╦п╧ я┤п╟я│, п╫п╟ п©я─п╬я┌я▐п╥я√ я▐п╨п╬пЁп╬ sudo
+п©п╟п╪'я▐я┌п╟я■ п©п╟я─п╬п╩я▄; п╡п╦п╨п╬я─п╦я│я┌п╟п╫п╫я▐ п╬п╢п╫п╬пЁп╬ п╨п╬п╫я└я√пЁя┐я─п╟я├я√п╧п╫п╬пЁп╬ я└п╟п╧п╩я┐ (sudoers)
+п╫п╟ п╠п╟пЁп╟я┌я▄п╬я┘ п╪п╟я┬п╦п╫п╟я┘.
 
 %prep
 %setup -q
