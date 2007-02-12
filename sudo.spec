@@ -6,12 +6,12 @@
 %bcond_without	ldap		# disable LDAP support
 #
 Summary:	Allows command execution as root for specified users
-Summary(es.UTF-8):   Permite que usuarios específicos ejecuten comandos como se fueran el root
-Summary(ja.UTF-8):   指定ユーザに制限付のroot権限を許可する
-Summary(pl.UTF-8):   Umożliwia wykonywanie poleceń jako root dla konkretnych użytkowników
-Summary(pt_BR.UTF-8):   Permite que usuários específicos executem comandos como se fossem o root
-Summary(ru.UTF-8):   Позволяет определенным пользователям исполнять команды от имени root
-Summary(uk.UTF-8):   Дозволяє вказаним користувачам виконувати команди від імені root
+Summary(es.UTF-8):	Permite que usuarios específicos ejecuten comandos como se fueran el root
+Summary(ja.UTF-8):	指定ユーザに制限付のroot権限を許可する
+Summary(pl.UTF-8):	Umożliwia wykonywanie poleceń jako root dla konkretnych użytkowników
+Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como se fossem o root
+Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
+Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.6.8p12
 Release:	7
