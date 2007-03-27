@@ -14,16 +14,19 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.6.8p12
-Release:	7
+Release:	7.1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 # Source0-md5:	b29893c06192df6230dd5f340f3badf5
 Source1:	%{name}.pamd
-Source2:	%{name}.logrotate
+Source2:	%{name}-i.pamd
+Source3:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
 Patch1:		%{name}-ac.patch
+Patch2:		%{name}-pam-sess.patch
+Patch3:		%{name}-pam-login.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -116,6 +119,8 @@ mv -f aclocal.m4 acinclude.m4
 rm -f acsite.m4
 
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
@@ -133,6 +138,7 @@ export ac_cv_func_utimes=no
 	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
+	--with-pam-login \
 	--with-logging=both \
 	--with-logfac=auth \
 	--with-logpath=/var/log/sudo \
@@ -160,8 +166,9 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo
 	sudoers_gid=`id -g`
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 touch $RPM_BUILD_ROOT/var/log/sudo
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
@@ -175,6 +182,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
