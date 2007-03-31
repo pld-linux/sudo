@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	selinux		# build without SELinux support
 %bcond_without	skey		# disable skey (onetime passwords) support
-%bcond_without	heimdal		# disable Kerberos support
+%bcond_without	kerberos5	# disable Kerberos V support
 %bcond_without	ldap		# disable LDAP support
 #
 Summary:	Allows command execution as root for specified users
@@ -14,7 +14,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.6.8p12
-Release:	7.1
+Release:	7.2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -30,7 +30,7 @@ Patch3:		%{name}-pam-login.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
-%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_kerberos5:BuildRequires:	krb5-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
@@ -147,7 +147,7 @@ export ac_cv_func_utimes=no
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
-	--with%{!?with_heimdal:out}-kerb5 \
+	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
 	--with-long-otp-prompt
