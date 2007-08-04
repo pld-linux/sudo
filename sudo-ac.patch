@@ -1,51 +1,11 @@
-diff -Nur sudo-1.6.8p12.orig/acinclude.m4 sudo-1.6.8p12.ac/acinclude.m4
---- sudo-1.6.8p12.orig/acinclude.m4	2004-09-07 20:14:51.000000000 +0300
-+++ sudo-1.6.8p12.ac/acinclude.m4	2006-09-05 16:50:19.000000000 +0300
-@@ -224,9 +224,9 @@
- rm -f core core.* *.core])dnl
- AC_MSG_RESULT($sudo_cv_func_fnmatch)
- if test $sudo_cv_func_fnmatch = yes; then
--  [$1]
-+  $1
- else
--  [$2]
-+  $2
- fi
- ])
- 
-diff -Nur sudo-1.6.8p12.orig/configure.in sudo-1.6.8p12.ac/configure.in
---- sudo-1.6.8p12.orig/configure.in	2006-09-05 16:50:19.000000000 +0300
-+++ sudo-1.6.8p12.ac/configure.in	2006-09-05 16:51:03.000000000 +0300
-@@ -1609,7 +1609,7 @@
+--- sudo-1.6.9p3/configure.in.orig	2007-08-04 23:19:04.049674000 +0200
++++ sudo-1.6.9p3/configure.in	2007-08-04 23:32:22.943201056 +0200
+@@ -1975,7 +1975,7 @@
      AC_CHECK_FUNCS(getspnam, [CHECKSHADOW="false"], [AC_CHECK_LIB(gen, getspnam, AC_DEFINE(HAVE_GETSPNAM) [SUDO_LIBS="${SUDO_LIBS} -lgen"; LIBS="${LIBS} -lgen"])])
  fi
  if test "$CHECKSHADOW" = "true"; then
 -    AC_CHECK_FUNC(getprpwnam, [AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1], AC_CHECK_LIB(sec, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsec"; LIBS="${LIBS} -lsec"], AC_CHECK_LIB(security, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsecurity"; LIBS="${LIBS} -lsecurity"], AC_CHECK_LIB(prot, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lprot"; LIBS="${LIBS} -lprot"])))])
-+    AC_CHECK_FUNC(getprpwnam, [AC_DEFINE(HAVE_GETPRPWNAM) AC_CHECK_LIB(sec, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsec"; LIBS="${LIBS} -lsec"], AC_CHECK_LIB(security, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsecurity"; LIBS="${LIBS} -lsecurity"], AC_CHECK_LIB(prot, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lprot"; LIBS="${LIBS} -lprot"]))) [CHECKSHADOW="false"; SECUREWARE=1]])
++    AC_CHECK_FUNC(getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1], AC_CHECK_LIB(sec, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsec"; LIBS="${LIBS} -lsec"], AC_CHECK_LIB(security, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lsecurity"; LIBS="${LIBS} -lsecurity"], AC_CHECK_LIB(prot, getprpwnam, AC_DEFINE(HAVE_GETPRPWNAM) [CHECKSHADOW="false"; SECUREWARE=1; SUDO_LIBS="${SUDO_LIBS} -lprot"; LIBS="${LIBS} -lprot"]))))
  fi
- 
- dnl
-@@ -1703,9 +1703,9 @@
- AC_CHECK_FUNCS(lockf flock, [break])
- AC_CHECK_FUNCS(waitpid wait3, [break])
- AC_CHECK_FUNCS(innetgr _innetgr, [AC_CHECK_FUNCS(getdomainname) [break]])
--AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], AC_LIBOBJ(lsearch), -), AC_LIBOBJ(lsearch))])
-+AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, [AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], [AC_LIBOBJ(lsearch)], -)], [AC_LIBOBJ(lsearch)])])
- AC_CHECK_FUNCS(utimes, [AC_CHECK_FUNCS(futimes futimesat, [break])], [AC_CHECK_FUNCS(futime) AC_LIBOBJ(utimes)])
--SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), AC_LIBOBJ(fnmatch))
-+SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), [AC_LIBOBJ(fnmatch)])
- SUDO_FUNC_ISBLANK
- AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
- AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
-diff -Nur sudo-1.6.8p12.orig/Makefile.in sudo-1.6.8p12.ac/Makefile.in
---- sudo-1.6.8p12.orig/Makefile.in	2006-09-05 16:50:19.000000000 +0300
-+++ sudo-1.6.8p12.ac/Makefile.in	2006-09-05 16:50:19.000000000 +0300
-@@ -187,7 +187,7 @@
- 	$(CC) -o $@ $(TESTOBJS) $(LIBOBJS) $(LDFLAGS) $(LIBS) $(NET_LIBS)
- 
- sudo_noexec.la: sudo_noexec.lo
--	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -rpath $(noexecdir)
-+	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -module -avoid-version -rpath $(noexecdir)
- 
- # Uncomment the following if you want "make distclean" to clean the parser
- @DEV@PARSESRCS = sudo.tab.h sudo.tab.c lex.yy.c def_data.c def_data.h
+ if test -n "$SECUREWARE"; then
+     AC_CHECK_FUNCS(bigcrypt set_auth_parameters initprivs)
