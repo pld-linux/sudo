@@ -1,0 +1,24 @@
+--- sudo-1.6.9p3/configure.in.orig	2007-08-04 22:34:32.005403000 +0200
++++ sudo-1.6.9p3/configure.in	2007-08-04 22:54:19.253060972 +0200
+@@ -1149,8 +1149,8 @@
+ dnl
+ AC_CANONICAL_HOST
+ AC_CANONICAL_TARGET([])
+-LT_PREREQ([1.9f])
+-LT_INIT([disable-static])
++AC_DISABLE_STATIC
++AC_PROG_LIBTOOL
+ 
+ dnl
+ dnl Defer with_noexec until after libtool magic runs
+--- sudo-1.6.9p3/Makefile.in.orig	2007-08-04 23:32:54.360991000 +0200
++++ sudo-1.6.9p3/Makefile.in	2007-08-04 23:41:47.219357321 +0200
+@@ -191,7 +191,7 @@
+ 	$(LIBTOOL) --mode=compile $(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) $(OPTIONS) $(srcdir)/sudo_noexec.c
+ 
+ sudo_noexec.la: sudo_noexec.lo
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -rpath $(noexecdir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -module -rpath $(noexecdir)
+ 
+ # Uncomment the following if you want "make distclean" to clean the parser
+ @DEV@PARSESRCS = sudo.tab.h sudo.tab.c lex.yy.c def_data.c def_data.h
