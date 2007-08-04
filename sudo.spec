@@ -1,9 +1,10 @@
 #
 # Conditional build:
-%bcond_without	selinux		# build without SELinux support
-%bcond_without	skey		# disable skey (onetime passwords) support
-%bcond_without	kerberos5	# disable Kerberos V support
+%bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
 %bcond_without	ldap		# disable LDAP support
+%bcond_without	pam		# disable PAM support
+%bcond_without	selinux		# build without SELinux support
+%bcond_with	skey		# enable skey (onetime passwords) support (conflicts with PAM)
 #
 Summary:	Allows command execution as root for specified users
 Summary(es.UTF-8):	Permite que usuarios específicos ejecuten comandos como se fueran el root
@@ -13,20 +14,20 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.6.8p12
-Release:	7.2
+Version:	1.6.9p3
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	b29893c06192df6230dd5f340f3badf5
+# Source0-md5:	21791b0bfb14fe1dc508fdcfaae9bacc
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
 Patch1:		%{name}-ac.patch
-Patch2:		%{name}-pam-sess.patch
-Patch3:		%{name}-pam-login.patch
+Patch2:		%{name}-pam-login.patch
+Patch3:		%{name}-libtool.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -34,7 +35,7 @@ BuildRequires:	automake
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
-BuildRequires:	pam-devel
+%{?with_pam:BuildRequires:	pam-devel}
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 Requires:	pam >= 0.99.7.1
 Obsoletes:	cu-sudo
