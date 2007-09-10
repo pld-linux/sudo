@@ -14,20 +14,19 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.6.9p4
+Version:	1.6.9p5
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	5439d24b48db69d2b6b42e97b47fdfd6
+# Source0-md5:	2db485a444dc6b26a3712be0dbf343f6
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
-Patch1:		%{name}-ac.patch
-Patch2:		%{name}-pam-login.patch
-Patch3:		%{name}-libtool.patch
+Patch1:		%{name}-pam-login.patch
+Patch2:		%{name}-libtool.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -121,7 +120,6 @@ rm -f acsite.m4
 
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
@@ -180,7 +178,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc BUGS CHANGES HISTORY README TODO TROUBLESHOOTING sample.sudoers
+%doc BUGS CHANGES HISTORY README TROUBLESHOOTING sample.sudoers
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
