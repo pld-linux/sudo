@@ -1,0 +1,3 @@
+- updated to 1.6.4p1
+- removed DESTDIR.patch (no longer needed)
+  WARNING: SECURITY FIX -- PLEASE UPDATE
