@@ -22,21 +22,20 @@ Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 # Source0-md5:	1f262526f321af388b37e05ee57bb2c7
 Source1:	%{name}.pamd
-Source2:	%{name}-i.pamd
-Source3:	%{name}.logrotate
+Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
-Patch1:		%{name}-pam-login.patch
-Patch2:		%{name}-libtool.patch
+Patch1:		%{name}-libtool.patch
+Patch2:		%{name}-env.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
-%{?with_kerberos5:BuildRequires:	krb5-devel}
+%{?with_kerberos5:BuildRequires:	heimdal-devel >= 0.7}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
-%{?with_pam:BuildRequires:	pam-devel}
+BuildRequires:	pam-devel
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	pam >= 0.99.7.1
+Requires:	pam >= 0.77.3
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -137,7 +136,6 @@ export ac_cv_func_utimes=no
 	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
-	--with-pam-login \
 	--with-logging=both \
 	--with-logfac=auth \
 	--with-logpath=/var/log/sudo \
@@ -146,10 +144,11 @@ export ac_cv_func_utimes=no
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
-	--with%{!?with_kerberos5:out}-kerb5 \
+	--with%{!?with_heimdal5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
-	--with-long-otp-prompt
+	--with-long-otp-prompt \
+	--with-sendmail=/usr/sbin/sendmail
 
 %{__make}
 
@@ -165,9 +164,8 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo
 	sudoers_gid=`id -g`
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 touch $RPM_BUILD_ROOT/var/log/sudo
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
@@ -181,7 +179,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc BUGS CHANGES HISTORY README TROUBLESHOOTING sample.sudoers
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
-%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
