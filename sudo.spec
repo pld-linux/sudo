@@ -15,7 +15,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.6.9p6
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -25,6 +25,7 @@ Source1:	%{name}.pamd
 Source2:	%{name}.logrotate
 Patch0:		%{name}-selinux.patch
 Patch1:		%{name}-libtool.patch
+Patch2:		%{name}-env.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -117,6 +118,7 @@ mv -f aclocal.m4 acinclude.m4
 rm -f acsite.m4
 
 %patch1 -p1
+%patch2 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
