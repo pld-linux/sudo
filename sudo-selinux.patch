@@ -368,19 +368,19 @@
  .IP "\-S" 4
  .IX Item "-S"
  The \fB\-S\fR (\fIstdin\fR) option causes \fBsudo\fR to read the password from
---- sudo-1.6.9p3/Makefile.in.orig	2007-08-02 17:51:59.000000000 +0200
-+++ sudo-1.6.9p3/Makefile.in	2007-08-04 22:18:17.657878682 +0200
+--- sudo-1.6.9p9/Makefile.in.orig	2007-12-03 11:34:32.000000000 +0100
++++ sudo-1.6.9p9/Makefile.in	2007-12-16 15:28:11.482396879 +0100
 @@ -43,7 +43,8 @@
  # Libraries
  LIBS = @LIBS@
  NET_LIBS = @NET_LIBS@
--SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ $(LIBS) $(NET_LIBS)
+-SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ @GETGROUPS_LIB@ $(LIBS) $(NET_LIBS)
 +SELINUX_LIBS = -lselinux 
-+SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ $(LIBS) $(NET_LIBS) $(SELINUX_LIBS)
++SUDO_LIBS = @SUDO_LIBS@ @AFS_LIBS@ @GETGROUPS_LIB@ $(LIBS) $(NET_LIBS) $(SELINUX_LIBS)
  
  # C preprocessor flags
  CPPFLAGS = -I. -I$(srcdir) @CPPFLAGS@
-@@ -90,7 +91,7 @@
+@@ -91,7 +92,7 @@
  sudoers_mode = @SUDOERS_MODE@
  
  # Pass in paths and uid/gid + OS dependent defined
@@ -389,7 +389,7 @@
  
  #### End of system configuration section. ####
  
-@@ -104,7 +105,7 @@
+@@ -105,7 +106,7 @@
         logging.c memrchr.c mkstemp.c parse.c parse.lex parse.yacc set_perms.c \
         sigaction.c snprintf.c strcasecmp.c strerror.c strlcat.c strlcpy.c \
         sudo.c sudo_noexec.c sudo.tab.c sudo_edit.c testsudoers.c tgetpass.c \
@@ -398,7 +398,7 @@
  
  AUTH_SRCS = auth/afs.c auth/aix_auth.c auth/bsdauth.c auth/dce.c auth/fwtk.c \
  	    auth/kerb4.c auth/kerb5.c auth/pam.c auth/passwd.c auth/rfc1938.c \
-@@ -126,6 +127,8 @@
+@@ -127,6 +128,8 @@
  
  VISUDOBJS = visudo.o fileops.o gettime.o goodpath.o find_path.o $(PARSEOBJS)
  
@@ -407,8 +407,8 @@
  TESTOBJS = interfaces.o testsudoers.o $(PARSEOBJS)
  
  LIBOBJS = @LIBOBJS@ @ALLOCA@
-@@ -146,7 +149,7 @@
- BINFILES= BUGS CHANGES HISTORY LICENSE README TODO TROUBLESHOOTING \
+@@ -147,7 +150,7 @@
+ BINFILES= BUGS CHANGES HISTORY LICENSE README TROUBLESHOOTING \
  	  UPGRADE install-sh mkinstalldirs sample.syslog.conf sample.sudoers \
  	  sudo sudo.cat sudo.man sudo.pod sudoers sudoers.cat sudoers.man \
 -	  sudoers.pod visudo visudo.cat visudo.man visudo.pod
@@ -416,7 +416,7 @@
  
  BINSPECIAL= INSTALL.binary Makefile.binary libtool
  
-@@ -178,6 +181,9 @@
+@@ -179,6 +182,9 @@
  visudo: $(VISUDOBJS) $(LIBOBJS)
  	$(CC) -o $@ $(VISUDOBJS) $(LIBOBJS) $(LDFLAGS) $(LIBS) $(NET_LIBS)
  
@@ -426,7 +426,7 @@
  testsudoers: $(TESTOBJS) $(LIBOBJS)
  	$(CC) -o $@ $(TESTOBJS) $(LIBOBJS) $(LDFLAGS) $(LIBS) $(NET_LIBS)
  
-@@ -219,6 +225,7 @@
+@@ -220,6 +226,7 @@
  set_perms.o: set_perms.c $(SUDODEP)
  tgetpass.o: tgetpass.c $(SUDODEP)
  visudo.o: visudo.c $(SUDODEP) version.h
@@ -434,7 +434,7 @@
  sudo.o: sudo.c $(SUDODEP) interfaces.h version.h
  interfaces.o: interfaces.c $(SUDODEP) interfaces.h
  testsudoers.o: testsudoers.c $(SUDODEP) parse.h interfaces.h
-@@ -314,6 +321,7 @@
+@@ -315,6 +322,7 @@
  	ln $(DESTDIR)$(sudodir)/sudo $(DESTDIR)$(sudodir)/sudoedit
  
  	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 0111 -s visudo $(DESTDIR)$(visudodir)/visudo
