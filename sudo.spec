@@ -14,20 +14,19 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.6.9p9
-Release:	2
+Version:	1.6.9p14
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	78a99d05f552c5bb30c818400b185341
+# Source0-md5:	a274767d74e99bdd86ebef4e9899a246
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
-Patch0:		%{name}-selinux.patch
-Patch1:		%{name}-pam-login.patch
-Patch2:		%{name}-libtool.patch
-Patch3:		%{name}-env.patch
+Patch0:		%{name}-pam-login.patch
+Patch1:		%{name}-libtool.patch
+Patch2:		%{name}-env.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -112,28 +111,20 @@ Sudo (superuser do) дозволяє системному адміністрат
 
 %prep
 %setup -q
-%{?with_selinux:%patch0 -p1}
-
 # only local macros
 mv -f aclocal.m4 acinclude.m4
 # kill libtool.m4 copy
 rm -f acsite.m4
 
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
-# sparc64 2.4.x kernels have buggy sys32_utimes(somefile, NULL) syscall
-# it's fixed in >= 2.4.31-0.3, but keep workaround not to require very
-# fresh kernel
-%ifarch sparc sparcv9
-export ac_cv_func_utimes=no
-%endif
 %configure \
 	NROFFPROG=nroff \
 	--with-incpath=/usr/include/security \
@@ -151,13 +142,14 @@ export ac_cv_func_utimes=no
 	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
+	--with%{!?with_selinux:out}-selinux \
 	--with-long-otp-prompt
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -186,8 +178,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
-%{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
 %attr(755,root,root) %{_sbindir}/visudo
+%{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man*/*
 %attr(600,root,root) %ghost /var/log/sudo
