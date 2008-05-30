@@ -14,13 +14,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.6.9p15
+Version:	1.6.9p16
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	06cfeed4ececfce6c82e03974c588066
+# Source0-md5:	b0d01b0c3d55076a47f06f70811be083
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -121,8 +121,8 @@ rm -f acsite.m4
 %patch2 -p1
 
 %build
-cp -f /usr/share/automake/config.sub .
 %{__libtoolize}
+cp -f /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %configure \
