@@ -121,7 +121,9 @@ rm -f acsite.m4
 %patch2 -p1
 
 %build
+%{__mv} install-sh install-custom-sh
 %{__libtoolize}
+%{__mv} install-custom-sh install-sh
 cp -f /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
@@ -149,23 +151,14 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man{5,8}}
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_libdir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
 
-install sudo $RPM_BUILD_ROOT%{_bindir}
-ln $RPM_BUILD_ROOT%{_bindir}/{sudo,sudoedit}
-install visudo $RPM_BUILD_ROOT%{_sbindir}
-
-install sesh $RPM_BUILD_ROOT%{_libdir}
-
-install .libs/sudo_noexec.so $RPM_BUILD_ROOT%{_libdir}
-
-install sudoers $RPM_BUILD_ROOT%{_sysconfdir}
-
-install sudoers.man $RPM_BUILD_ROOT%{_mandir}/man5/sudoers.5
-install sudo.man $RPM_BUILD_ROOT%{_mandir}/man8/sudo.8
-install visudo.man $RPM_BUILD_ROOT%{_mandir}/man8/visudo.8
-ln $RPM_BUILD_ROOT%{_mandir}/man8/{sudo,sudoedit}.8
+%{__make} -j1 install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	install_uid=`id -u` \
+	install_gid=`id -g` \
+	sudoers_uid=`id -u` \
+	sudoers_gid=`id -g`
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
