@@ -145,7 +145,7 @@ cp -f /usr/share/automake/config.sub .
 	--with%{!?with_selinux:out}-selinux \
 	--with-long-otp-prompt
 
-%{__make} -j1
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
