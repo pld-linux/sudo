@@ -181,7 +181,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/visudo
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
-%{_mandir}/man*/*
+%{_mandir}/man8/sudo.8*
+%{_mandir}/man5/sudoers.5*
+%{_mandir}/man8/sudoedit.8*
+%{_mandir}/man8/visudo.8*
 %attr(600,root,root) %ghost /var/log/sudo
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/run/sudo
