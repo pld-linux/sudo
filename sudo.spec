@@ -169,6 +169,12 @@ chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
 
+# replace hardlinks with symlinks
+rm -f $RPM_BUILD_ROOT%{_bindir}/sudoedit
+rm -f $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
+ln -s %{_bindir}/sudo $RPM_BUILD_ROOT%{_bindir}/sudoedit
+ln -s %{_mandir}/man8/sudo.8 $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
