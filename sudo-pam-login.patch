@@ -20,22 +20,23 @@
      yes)	AC_DEFINE(HAVE_AFS)
 --- sudo-1.6.9p3/sudo.c.orig	2007-08-04 22:30:23.307231082 +0200
 +++ sudo-1.6.9p3/sudo.c	2007-08-04 22:31:28.238931329 +0200
-@@ -164,6 +164,7 @@
- char *login_style;
- #endif /* HAVE_BSD_AUTH_H */
- sigaction_t saved_sa_int, saved_sa_quit, saved_sa_tstp;
+@@ -157,6 +157,7 @@
+ static char *runas_user;
+ static char *runas_group;
+ static struct sudo_nss_list *snl;
 +int sudo_mode;
  
- #ifdef WITH_SELINUX
- security_context_t setup_tty_context(int fd, char *ttyn, security_context_t new_context) {
-@@ -319,7 +320,6 @@
-     int validated;
-     int fd;
-     int cmnd_status;
--    int sudo_mode;
-     int pwflag;
+ /* For getopt(3) */
+ extern char *optarg;
+@@ -169,7 +170,7 @@
+     char **envp;
+ {
+     int sources = 0, validated;
+-    int fd, cmnd_status, sudo_mode, pwflag, rc = 0;
++    int fd, cmnd_status, pwflag, rc = 0;
      sigaction_t sa;
-     extern int printmatches;
+     struct sudo_nss *nss;
+ #if defined(SUDO_DEVEL) && defined(__OpenBSD__)
 --- sudo-1.6.8p12/auth/pam.c.login	2006-07-16 15:41:59.000000000 +0200
 +++ sudo-1.6.8p12/auth/pam.c	2006-07-16 15:45:15.000000000 +0200
 @@ -89,7 +89,12 @@
