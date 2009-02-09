@@ -1,3 +1,4 @@
+# TODO: Review pam stuff.
 #
 # Conditional build:
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
@@ -33,10 +34,10 @@ BuildRequires:	automake
 %{?with_kerberos5:BuildRequires:	krb5-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
+%{?with_ldap:BuildRequires:	openldap-devel  }
 %{?with_pam:BuildRequires:	pam-devel}
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	pam >= 0.99.7.1
+Requires:	pam >= 0.80.1
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
