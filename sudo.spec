@@ -1,3 +1,4 @@
+# TODO: Review pam stuff.
 #
 # Conditional build:
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
@@ -14,29 +15,29 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.6.9p6
-Release:	3
+Version:	1.7.0
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	1f262526f321af388b37e05ee57bb2c7
+# Source0-md5:	5fd96bba35fe29b464f7aa6ad255f0a6
 Source1:	%{name}.pamd
-Source2:	%{name}.logrotate
-Patch0:		%{name}-selinux.patch
+Source2:	%{name}-i.pamd
+Source3:	%{name}.logrotate
+Patch0:		%{name}-pam-login.patch
 Patch1:		%{name}-libtool.patch
 Patch2:		%{name}-env.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
-%{?with_kerberos5:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_kerberos5:BuildRequires:	krb5-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
-BuildRequires:	pam-devel
+%{?with_ldap:BuildRequires:	openldap-devel  }
+%{?with_pam:BuildRequires:	pam-devel}
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	logrotate
-Requires:	pam >= 0.77.3
+Requires:	pam >= 0.80.1
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -111,32 +112,28 @@ Sudo (superuser do) дозволяє системному адміністрат
 
 %prep
 %setup -q
-%{?with_selinux:%patch0 -p1}
-
 # only local macros
 mv -f aclocal.m4 acinclude.m4
 # kill libtool.m4 copy
 rm -f acsite.m4
 
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
 %build
-cp -f /usr/share/automake/config.sub .
+%{__mv} install-sh install-custom-sh
 %{__libtoolize}
+%{__mv} install-custom-sh install-sh
+cp -f /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
-# sparc64 2.4.x kernels have buggy sys32_utimes(somefile, NULL) syscall
-# it's fixed in >= 2.4.31-0.3, but keep workaround not to require very
-# fresh kernel
-%ifarch sparc sparcv9
-export ac_cv_func_utimes=no
-%endif
 %configure \
 	NROFFPROG=nroff \
 	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
+	--with-pam-login \
 	--with-logging=both \
 	--with-logfac=auth \
 	--with-logpath=/var/log/sudo \
@@ -145,19 +142,19 @@ export ac_cv_func_utimes=no
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
-	--with%{!?with_heimdal5:out}-kerb5 \
+	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
-	--with-long-otp-prompt \
-	--with-sendmail=/usr/sbin/sendmail
+	--with%{!?with_selinux:out}-selinux \
+	--with-long-otp-prompt
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	install_uid=`id -u` \
 	install_gid=`id -g` \
@@ -165,27 +162,37 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo
 	sudoers_gid=`id -g`
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 touch $RPM_BUILD_ROOT/var/log/sudo
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
+
+# replace hardlinks with symlinks
+ln -sf %{_bindir}/sudo $RPM_BUILD_ROOT%{_bindir}/sudoedit
+rm -f $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
+echo '.so sudo.8' > $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc BUGS CHANGES HISTORY README TROUBLESHOOTING sample.sudoers
+%doc HISTORY README TROUBLESHOOTING sample.sudoers
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
+%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
-%{?with_selinux:%attr(755,root,root) %{_sbindir}/sesh}
 %attr(755,root,root) %{_sbindir}/visudo
+%{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
-%{_mandir}/man*/*
+%{_mandir}/man5/sudoers.5*
+%{_mandir}/man8/sudo.8*
+%{_mandir}/man8/sudoedit.8*
+%{_mandir}/man8/visudo.8*
 %attr(600,root,root) %ghost /var/log/sudo
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/run/sudo
