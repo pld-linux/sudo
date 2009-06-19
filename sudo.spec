@@ -1,3 +1,4 @@
+# TODO: Review pam stuff.
 #
 # Conditional build:
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
@@ -14,13 +15,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.0
+Version:	1.7.1
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	5fd96bba35fe29b464f7aa6ad255f0a6
+# Source0-md5:	af672524b2c854a67612bf4c743f58b8
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -33,10 +34,10 @@ BuildRequires:	automake
 %{?with_kerberos5:BuildRequires:	krb5-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool
-%{?with_ldap:BuildRequires:	openldap-devel >= 2.4.6}
+%{?with_ldap:BuildRequires:	openldap-devel  }
 %{?with_pam:BuildRequires:	pam-devel}
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	pam >= 0.99.7.1
+Requires:	pam >= 0.80.1
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
