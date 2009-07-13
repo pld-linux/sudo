@@ -1,21 +1,22 @@
 --- sudo-1.6.8p12/configure.in.login	2006-07-16 15:25:33.000000000 +0200
 +++ sudo-1.6.8p12/configure.in	2006-07-16 15:49:08.000000000 +0200
-@@ -357,6 +357,17 @@
+@@ -394,6 +394,18 @@
  		;;
  esac])
  
-+AC_ARG_WITH(pam-login, [  --with-pam-login              enable specific PAM session for sudo -i],
++AC_ARG_WITH(pam-login, [AS_HELP_STRING([--with-pam-login],[enable specific PAM session for sudo -i])],
 +[case $with_pam_login in
 +    yes)	AC_DEFINE(HAVE_PAM_LOGIN)
 +		AC_MSG_CHECKING(whether to use PAM login)
 +		AC_MSG_RESULT(yes)
 +		;;
-+    no)		;;
-+    *)		AC_MSG_ERROR(["--with-pam-login does not take an argument."])
++    no)
++		;;
++     *)		AC_MSG_ERROR(["--with-pam-login does not take an argument."])
 +		;;
 +esac])
 +
- AC_ARG_WITH(AFS, [  --with-AFS              enable AFS support],
+ AC_ARG_WITH(AFS, [AS_HELP_STRING([--with-AFS], [enable AFS support])],
  [case $with_AFS in
      yes)	AC_DEFINE(HAVE_AFS)
 --- sudo-1.6.9p3/sudo.c.orig	2007-08-04 22:30:23.307231082 +0200
