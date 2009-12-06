@@ -59,13 +59,18 @@ argumentos. Sudo opera en una base por comando, no siendo un
 substituto para la shell.
 
 %description -l ja.UTF-8
-sudo (superuser do) とはシステム管理者が、信用できるユーザ(またはグループ)に対
-して、いくつか(もしくは全て)のコマンドを root として実行できるよう、そのコマン
-ドの実行履歴のログをとりつつ許可する仕組みです。sudo はコマンド一行単位で動作
+sudo (superuser do)
+とはシステム管理者が、信用できるユーザ(またはグループ)に対
+して、いくつか(もしくは全て)のコマンドを root
+として実行できるよう、そのコマン
+ドの実行履歴のログをとりつつ許可する仕組みです。sudo
+はコマンド一行単位で動作
 します。シェルの置き換えではありません。以下の機能を内蔵しています。ホスト単位
 で、そのコマンドを実行可能なユーザを制限する機能、各コマンドについての(誰がな
-にを実行したかの痕跡を残すための)豊富なロギング機能、sudo コマンドのタイムアウ
-ト時間を設定可能、複数のマシンで同一の設定ファイル(sudoers)を共有する機能、が あります。
+にを実行したかの痕跡を残すための)豊富なロギング機能、sudo
+コマンドのタイムアウ
+ト時間を設定可能、複数のマシンで同一の設定ファイル(sudoers)を共有する機能、が
+あります。
 
 %description -l pl.UTF-8
 Sudo (superuser do) umożliwia wykonywanie konkretnych poleceń jako
@@ -124,7 +129,7 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
-	--with-incpath=%{_includedir}/security \
+	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-pam-login \
@@ -133,7 +138,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
---with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
+	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--disable-saved-ids \
 	--with%{!?with_kerberos5:out}-kerb5 \
