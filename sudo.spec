@@ -14,13 +14,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.2p4
+Version:	1.7.2p5
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	3989e5a00538247d7dcef8b514076752
+# Source0-md5:	398f584e831bd75b3c0179e28368c2a3
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -140,7 +140,6 @@ cp -f /usr/share/automake/config.sub .
 	--with-env-editor \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
-	--disable-saved-ids \
 	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
