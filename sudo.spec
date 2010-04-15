@@ -14,13 +14,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.2p5
+Version:	1.7.2p6
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	398f584e831bd75b3c0179e28368c2a3
+# Source0-md5:	c4f1a43e8ba94f6bf06d2211442148c4
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -188,6 +188,7 @@ rm -rf $RPM_BUILD_ROOT
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man5/sudoers.5*
+%{_mandir}/man5/sudoers.ldap.5*
 %{_mandir}/man8/sudo.8*
 %{_mandir}/man8/sudoedit.8*
 %{_mandir}/man8/visudo.8*
