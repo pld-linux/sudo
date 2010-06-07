@@ -5,7 +5,13 @@
 %bcond_without	pam		# disable PAM support
 %bcond_without	selinux		# build without SELinux support
 %bcond_with	skey		# enable skey (onetime passwords) support (conflicts with PAM)
-#
+
+%if "%{pld_release}" == "ac"
+%define		pam_ver	0.80.1
+%else
+%define		pam_ver	0.99.7.1
+%endif
+
 Summary:	Allows command execution as root for specified users
 Summary(es.UTF-8):	Permite que usuarios específicos ejecuten comandos como se fueran el root
 Summary(ja.UTF-8):	指定ユーザに制限付のroot権限を許可する
@@ -35,8 +41,9 @@ BuildRequires:	automake
 BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
+BuildRequires:	rpm >= 4.4.9-56
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
-Requires:	pam >= 0.99.7.1
+Requires:	pam >= %{pam_ver}
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -188,7 +195,7 @@ rm -rf $RPM_BUILD_ROOT
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
 %{_mandir}/man5/sudoers.5*
-%{_mandir}/man5/sudoers.ldap.5*
+%{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
 %{_mandir}/man8/sudoedit.8*
 %{_mandir}/man8/visudo.8*
