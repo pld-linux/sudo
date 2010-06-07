@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.2p7
-Release:	4
+Release:	5
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -203,9 +203,9 @@ rm -rf $RPM_BUILD_ROOT
 %openldap_schema_register %{schemadir}/sudo.schema -d core
 %service -q ldap restart
 
-%banner -e openldap-schema-sudo <<'EOF'
 # banner on first install
-if [ "$1" = "1" ]; the
+if [ "$1" = "1" ]; then
+%banner -e openldap-schema-sudo <<'EOF'
 NOTE:
 In order for sudoRole LDAP queries to be efficient, the server must index
 the attribute 'sudoUser', e.g.
