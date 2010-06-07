@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.2p7
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -42,10 +42,13 @@ BuildRequires:	libtool
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
+BuildRequires:	rpmbuild(macros) >= 1.402
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 Requires:	pam >= %{pam_ver}
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		schemadir	/usr/share/openldap/schema
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
@@ -116,6 +119,19 @@ Sudo (superuser do) дозволяє системному адміністрат
 пам'ятає пароль; використання одного конфігураційного файлу (sudoers)
 на багатьох машинах.
 
+%package -n openldap-schema-sudo
+Summary:	Sudo LDAP schema
+Group:		Networking/Daemons
+Requires(post,postun):	sed >= 4.0
+Requires:	openldap-servers
+Requires:	sed >= 4.0
+
+%description -n openldap-schema-sudo
+This package contains sudo.schema for openldap.
+
+%description -n openldap-schema-sudo -l pl.UTF-8
+Ten pakiet zawiera sudo.schema dla pakietu openldap.
+
 %prep
 %setup -q
 # only local macros
@@ -161,31 +177,54 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	install_uid=`id -u` \
-	install_gid=`id -g` \
-	sudoers_uid=`id -u` \
-	sudoers_gid=`id -g`
+	install_uid=$(id -u) \
+	install_gid=$(id -g) \
+	sudoers_uid=$(id -u) \
+	sudoers_gid=$(id -g)
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
+cp -a %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
+cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 touch $RPM_BUILD_ROOT/var/log/sudo
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
+cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
 
-# replace hardlinks with symlinks
-ln -sf %{_bindir}/sudo $RPM_BUILD_ROOT%{_bindir}/sudoedit
-rm -f $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
-echo '.so sudo.8' > $RPM_BUILD_ROOT%{_mandir}/man8/sudoedit.8
+%if %{with ldap}
+install -d $RPM_BUILD_ROOT%{schemadir}
+cp -a schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -n openldap-schema-sudo
+%openldap_schema_register %{schemadir}/sudo.schema -d core
+%service -q ldap restart
+
+%banner -e openldap-schema-sudo <<'EOF'
+# banner on first install
+if [ "$1" = "1" ]; the
+NOTE:
+In order for sudoRole LDAP queries to be efficient, the server must index
+the attribute 'sudoUser', e.g.
+
+    # Indices to maintain
+    index   sudoUser    eq
+EOF
+fi
+
+%postun -n openldap-schema-sudo
+if [ "$1" = "0" ]; then
+	%openldap_schema_unregister %{schemadir}/sudo.schema
+	%service -q ldap restart
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc HISTORY README TROUBLESHOOTING sample.sudoers
+%{?with_ldap:%doc README.LDAP sudoers2ldif}
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
@@ -202,3 +241,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/run/sudo
+
+%files -n openldap-schema-sudo
+%defattr(644,root,root,755)
+%{schemadir}/*.schema
