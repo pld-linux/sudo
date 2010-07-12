@@ -19,25 +19,17 @@
  AC_ARG_WITH(AFS, [AS_HELP_STRING([--with-AFS], [enable AFS support])],
  [case $with_AFS in
      yes)	AC_DEFINE(HAVE_AFS)
---- sudo-1.6.9p3/sudo.c.orig	2007-08-04 22:30:23.307231082 +0200
-+++ sudo-1.6.9p3/sudo.c	2007-08-04 22:31:28.238931329 +0200
-@@ -157,6 +157,7 @@
- static char *runas_user;
- static char *runas_group;
+--- sudo-1.7.3/sudo.c~	2010-06-29 19:33:55.000000000 +0300
++++ sudo-1.7.3/sudo.c	2010-07-12 12:56:28.390424928 +0300
+@@ -147,7 +147,7 @@
+ char *runas_user;
+ char *runas_group;
  static struct sudo_nss_list *snl;
+-static int sudo_mode;
 +int sudo_mode;
  
  /* For getopt(3) */
  extern char *optarg;
-@@ -169,7 +170,7 @@
-     char **envp;
- {
-     int sources = 0, validated;
--    int fd, cmnd_status, sudo_mode, pwflag, rc = 0;
-+    int fd, cmnd_status, pwflag, rc = 0;
-     sigaction_t sa;
-     struct sudo_nss *nss;
- #if defined(SUDO_DEVEL) && defined(__OpenBSD__)
 --- sudo-1.6.8p12/auth/pam.c.login	2006-07-16 15:41:59.000000000 +0200
 +++ sudo-1.6.8p12/auth/pam.c	2006-07-16 15:45:15.000000000 +0200
 @@ -89,7 +89,12 @@
@@ -54,16 +46,16 @@
      if (pam_status != PAM_SUCCESS) {
  	log_error(USE_ERRNO|NO_EXIT|NO_MAIL, "unable to initialize PAM");
  	return(AUTH_FATAL);
---- sudo-1.6.9p3/sudo.h.orig	2007-07-06 16:14:34.000000000 +0200
-+++ sudo-1.6.9p3/sudo.h	2007-08-04 22:32:18.353787210 +0200
-@@ -268,6 +268,7 @@
- extern FILE *sudoers_fp;
+--- sudo-1.7.3/sudo.h~	2010-06-29 19:58:19.000000000 +0300
++++ sudo-1.7.3/sudo.h	2010-07-12 12:55:18.229600104 +0300
+@@ -356,6 +356,7 @@
  extern int tgetpass_flags;
+ extern int long_list;
  extern uid_t timestamp_uid;
 +extern int sudo_mode;
+ /* XXX - conflicts with the one in visudo */
+ int run_command __P((const char *path, char *argv[], char *envp[], uid_t uid, int dowait));
  #endif
- #ifndef errno
- extern int errno;
 --- sudo-1.6.8p12/config.h.in.login	2006-07-16 15:32:09.000000000 +0200
 +++ sudo-1.6.8p12/config.h.in	2006-07-16 15:32:56.000000000 +0200
 @@ -230,6 +230,9 @@

@@ -20,13 +20,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.2p7
-Release:	6
+Version:	1.7.3
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	3ac78668427a53e12d7639fdfab2f1af
+# Source0-md5:	c22115b47cb2591bceedb914b673f031
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -138,6 +138,8 @@ Ten pakiet zawiera sudo.schema dla pakietu openldap.
 mv -f aclocal.m4 acinclude.m4
 # kill libtool.m4 copy
 rm -f acsite.m4
+# do not load libtool macros from acinclude
+%{__sed} -i -e '/Pull in libtool macros/,$d' acinclude.m4
 
 %patch0 -p1
 %patch1 -p1
@@ -174,6 +176,9 @@ cp -f /usr/share/automake/config.sub .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
+
+# makefile broken?
+touch .libs/sudo_noexec.so
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -230,6 +235,7 @@ fi
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
+%attr(755,root,root) %{_bindir}/sudoreplay
 %attr(755,root,root) %{_sbindir}/visudo
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
@@ -237,6 +243,7 @@ fi
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
 %{_mandir}/man8/sudoedit.8*
+%{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
