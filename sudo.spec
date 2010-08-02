@@ -20,19 +20,18 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.3
-Release:	2
+Version:	1.7.4
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	c22115b47cb2591bceedb914b673f031
+# Source0-md5:	346b942e6e31885cb313b2e45e70338c
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
-Patch0:		%{name}-pam-login.patch
-Patch1:		%{name}-libtool.patch
-Patch2:		%{name}-env.patch
+Patch0:		%{name}-libtool.patch
+Patch1:		%{name}-env.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -143,7 +142,6 @@ rm -f acsite.m4
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
@@ -195,6 +193,7 @@ cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 chmod -R +r $RPM_BUILD_ROOT%{_prefix}
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %if %{with ldap}
 install -d $RPM_BUILD_ROOT%{schemadir}
@@ -228,7 +227,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc HISTORY README TROUBLESHOOTING sample.sudoers
+%doc ChangeLog HISTORY NEWS README TROUBLESHOOTING UPGRADE sample.*
 %{?with_ldap:%doc README.LDAP sudoers2ldif}
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
