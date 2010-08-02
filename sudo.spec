@@ -37,7 +37,7 @@ BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
