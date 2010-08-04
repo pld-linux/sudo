@@ -120,6 +120,7 @@ Sudo (superuser do) дозволяє системному адміністрат
 
 %package -n openldap-schema-sudo
 Summary:	Sudo LDAP schema
+Summary(pl.UTF-8):	Schemat bazy sudo dla LDAP
 Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
@@ -250,4 +251,4 @@ fi
 
 %files -n openldap-schema-sudo
 %defattr(644,root,root,755)
-%{schemadir}/*.schema
+%{schemadir}/sudo.schema
