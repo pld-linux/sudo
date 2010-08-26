@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.4p3
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -174,7 +174,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
 
 # makefile broken?
 touch .libs/sudo_noexec.so
@@ -230,6 +230,7 @@ fi
 %defattr(644,root,root,755)
 %doc ChangeLog HISTORY NEWS README TROUBLESHOOTING UPGRADE sample.*
 %{?with_ldap:%doc README.LDAP sudoers2ldif}
+%attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
