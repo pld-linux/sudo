@@ -1,6 +1,18 @@
---- sudo-1.6.9p6/env.c~	2007-07-31 21:04:31.000000000 +0300
-+++ sudo-1.6.9p6/env.c	2007-11-01 22:36:20.405065166 +0200
-@@ -208,6 +208,7 @@
+--- sudo-1.6.9p6/env.c	2007-11-01 22:36:20.405065166 +0200
++++ sudo-1.7.4p4/env.c	2010-09-15 00:12:17.263129568 +0300
+@@ -196,9 +196,11 @@
+ static const char *initial_keepenv_table[] = {
+     "COLORS",
+     "DISPLAY",
++    "HOME",
+     "HOSTNAME",
+     "KRB5CCNAME",
+     "LS_COLORS",
++    "MAIL",
+     "PATH",
+     "PS1",
+     "PS2",
+@@ -208,6 +210,7 @@
      "TZ",
      "XAUTHORITY",
      "XAUTHORIZATION",
