@@ -1,3 +1,6 @@
+# TODO
+# - think of reverting 1.7.4 "behaviour" for -H and $HOME:
+#   http://www.gratisoft.us/bugzilla/show_bug.cgi?id=440
 #
 # Conditional build:
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
