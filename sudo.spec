@@ -1,6 +1,3 @@
-# TODO
-# - think of reverting 1.7.4 "behaviour" for -H and $HOME:
-#   http://www.gratisoft.us/bugzilla/show_bug.cgi?id=440
 #
 # Conditional build:
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
@@ -24,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.4p4
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -35,6 +32,7 @@ Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
+Patch2:		bug-440.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -146,6 +144,7 @@ rm -f acsite.m4
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
