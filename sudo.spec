@@ -156,7 +156,7 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
-	--with-incpath=%{_includedir}/security \
+	--with-incpath=/usr/include/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-pam-login \
@@ -165,7 +165,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
-	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
+	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
