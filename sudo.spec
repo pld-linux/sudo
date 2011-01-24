@@ -20,13 +20,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.4p5
+Version:	1.7.4p6
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	4c8105507363371dea89ceb7c92187dd
+# Source0-md5:	1ae12d3d22e7ffedbf2db26f957676f0
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -156,7 +156,7 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
-	--with-incpath=/usr/include/security \
+	--with-incpath=%{_includedir}/security \
 	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-pam-login \
@@ -165,7 +165,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
-	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
+	--with-secure-path="/bin:/sbin:%{_bindir}:%{_sbindir}" \
 	--with-loglen=320 \
 	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
