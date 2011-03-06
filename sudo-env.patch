@@ -1,6 +1,6 @@
---- sudo-1.6.9p6/env.c	2007-11-01 22:36:20.405065166 +0200
-+++ sudo-1.7.4p4/env.c	2010-09-15 00:12:17.263129568 +0300
-@@ -196,9 +196,11 @@
+--- sudo-1.7.5/env.c	2011-01-24 21:39:13.000000000 +0200
++++ sudo-1.7.5/env.c	2011-03-06 11:00:00.580457486 +0200
+@@ -196,12 +196,15 @@
  static const char *initial_keepenv_table[] = {
      "COLORS",
      "DISPLAY",
@@ -12,11 +12,7 @@
      "PATH",
      "PS1",
      "PS2",
-@@ -208,6 +210,7 @@
++    "SSH_AUTH_SOCK",
      "TZ",
      "XAUTHORITY",
      "XAUTHORIZATION",
-+    "SSH_AUTH_SOCK",
-     NULL
- };
- 

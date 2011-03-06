@@ -20,19 +20,18 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.4p6
+Version:	1.7.5
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	1ae12d3d22e7ffedbf2db26f957676f0
+# Source0-md5:	50d39bd38bb2ef7efa05883c0b9f0f95
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
-Patch2:		bug-440.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -43,8 +42,9 @@ BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
-BuildRequires:	rpmbuild(macros) >= 1.402
+BuildRequires:	rpmbuild(macros) >= 1.595
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
+BuildRequires:	zlib-devel
 Requires:	pam >= %{pam_ver}
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -137,15 +137,13 @@ Ten pakiet zawiera sudo.schema dla pakietu openldap.
 %prep
 %setup -q
 # only local macros
-mv -f aclocal.m4 acinclude.m4
-# kill libtool.m4 copy
-rm -f acsite.m4
+mv aclocal.m4 acinclude.m4
 # do not load libtool macros from acinclude
+cp acinclude.m4 acinclude.m4.orig
 %{__sed} -i -e '/Pull in libtool macros/,$d' acinclude.m4
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
@@ -167,6 +165,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-env-editor \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
+	--enable-zlib=system \
 	--with%{!?with_kerberos5:out}-kerb5 \
 	--with%{!?with_ldap:out}-ldap \
 	--with%{!?with_skey:out}-skey \
@@ -175,12 +174,12 @@ cp -f /usr/share/automake/config.sub .
 
 %{__make}
 
+# makefile broken?
+#touch .libs/sudo_noexec.so
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log,run/sudo},%{_mandir}/man8}
-
-# makefile broken?
-touch .libs/sudo_noexec.so
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log/sudo-io,run/sudo},%{_mandir}/man8}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -189,19 +188,16 @@ touch .libs/sudo_noexec.so
 	sudoers_uid=$(id -u) \
 	sudoers_gid=$(id -g)
 
-cp -a %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
-cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
+cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 touch $RPM_BUILD_ROOT/var/log/sudo
-cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
-chmod -R +r $RPM_BUILD_ROOT%{_prefix}
-
-rm -f $RPM_BUILD_ROOT%{_libdir}/sudo_noexec.la
-rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %if %{with ldap}
 install -d $RPM_BUILD_ROOT%{schemadir}
-cp -a schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
+cp -p schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
 %endif
 
 %clean
@@ -210,10 +206,7 @@ rm -rf $RPM_BUILD_ROOT
 %post -n openldap-schema-sudo
 %openldap_schema_register %{schemadir}/sudo.schema -d core
 %service -q ldap restart
-
-# banner on first install
-if [ "$1" = "1" ]; then
-%banner -e openldap-schema-sudo <<'EOF'
+%banner -o -e openldap-schema-sudo <<'EOF'
 NOTE:
 In order for sudoRole LDAP queries to be efficient, the server must index
 the attribute 'sudoUser', e.g.
@@ -221,7 +214,6 @@ the attribute 'sudoUser', e.g.
     # Indices to maintain
     index   sudoUser    eq
 EOF
-fi
 
 %postun -n openldap-schema-sudo
 if [ "$1" = "0" ]; then
@@ -250,6 +242,7 @@ fi
 %{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*
 %attr(600,root,root) %ghost /var/log/sudo
+%attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/run/sudo
 
