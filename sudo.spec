@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.5
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -32,6 +32,7 @@ Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
+Patch2:		bug-452.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -144,6 +145,7 @@ cp acinclude.m4 acinclude.m4.orig
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
