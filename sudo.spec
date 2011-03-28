@@ -33,6 +33,7 @@ Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
 Patch2:		bug-452.patch
+Patch3:		ac-underquote.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -146,6 +147,7 @@ cp acinclude.m4 acinclude.m4.orig
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
