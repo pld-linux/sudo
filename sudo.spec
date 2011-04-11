@@ -20,20 +20,18 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.5
-Release:	3
+Version:	1.7.6
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	50d39bd38bb2ef7efa05883c0b9f0f95
+# Source0-md5:	4d97dd8b46f09924ba07e6aeb407578f
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
-Patch2:		bug-452.patch
-Patch3:		ac-underquote.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -146,8 +144,6 @@ cp acinclude.m4 acinclude.m4.orig
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
