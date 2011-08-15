@@ -1,0 +1,12 @@
+--- sudo-1.7.6/sudoers.in~	2010-08-18 14:25:38.000000000 +0300
++++ sudo-1.7.6/sudoers.in	2011-08-15 19:32:35.509228012 +0300
+@@ -55,6 +55,9 @@
+ ## this may allow users to subvert the command being run via sudo.
+ # Defaults env_keep += "XMODIFIERS GTK_IM_MODULE QT_IM_MODULE QT_IM_SWITCHER"
+ ##
++# Uncomment to disable TTY tickets
++# Defaults !tty_tickets
++#
+ ## Uncomment to enable logging of a command's output, except for
+ ## sudoreplay and reboot.  Use sudoreplay to play back logged sessions.
+ # Defaults log_output

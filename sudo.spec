@@ -32,6 +32,7 @@ Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
+Patch2:		config.patch
 URL:		http://www.sudo.ws/sudo/
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
@@ -139,11 +140,12 @@ Ten pakiet zawiera sudo.schema dla pakietu openldap.
 # only local macros
 mv aclocal.m4 acinclude.m4
 # do not load libtool macros from acinclude
-cp acinclude.m4 acinclude.m4.orig
+cp -p acinclude.m4 acinclude.m4.orig
 %{__sed} -i -e '/Pull in libtool macros/,$d' acinclude.m4
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
