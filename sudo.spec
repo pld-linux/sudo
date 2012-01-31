@@ -53,8 +53,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		schemadir	/usr/share/openldap/schema
 
-#define		no_install_post_check_tmpfiles	1
-
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
 the superuser (real and effective uid and gid are set to 0 and root's
