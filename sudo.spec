@@ -30,6 +30,7 @@ Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
+Source4:	%{name}.tmpfiles
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
 Patch2:		config.patch
@@ -51,6 +52,8 @@ Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		schemadir	/usr/share/openldap/schema
+
+#define		no_install_post_check_tmpfiles	1
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
@@ -181,7 +184,8 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log/sudo-io,run/sudo},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log/sudo-io,run/sudo},%{_mandir}/man8} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -193,6 +197,8 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{lo
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
+install %{SOURCE4} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+
 touch $RPM_BUILD_ROOT/var/log/sudo
 
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
@@ -247,6 +253,7 @@ fi
 %attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/run/sudo
+/usr/lib/tmpfiles.d/%{name}.conf
 
 %files -n openldap-schema-sudo
 %defattr(644,root,root,755)
