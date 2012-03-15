@@ -20,13 +20,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.8p2
-Release:	5
+Version:	1.7.9
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	31f9a5a70e2ea9e45689de5cbf67383c
+# Source0-md5:	d9002b306986fa7735ee6aa003624885
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -174,9 +174,6 @@ cp -f /usr/share/automake/config.sub .
 	--with-long-otp-prompt
 
 %{__make}
-
-# makefile broken?
-#touch .libs/sudo_noexec.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
