@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.8p2
-Release:	4
+Release:	5
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -30,7 +30,6 @@ Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
-Source4:	%{name}.tmpfiles
 Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
 Patch2:		config.patch
@@ -158,7 +157,6 @@ cp -f /usr/share/automake/config.sub .
 %configure \
 	NROFFPROG=nroff \
 	--with-incpath=/usr/include/security \
-	--with-timedir=/var/run/sudo \
 	--with-pam \
 	--with-pam-login \
 	--with-logging=both \
@@ -182,8 +180,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{log/sudo-io,run/sudo},%{_mandir}/man8} \
-	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/log/sudo-io,%{_mandir}/man8}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -195,7 +192,6 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/{lo
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
-install %{SOURCE4} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 touch $RPM_BUILD_ROOT/var/log/sudo
 
@@ -227,6 +223,10 @@ if [ "$1" = "0" ]; then
 	%service -q ldap restart
 fi
 
+%triggerpostun -- %{name} < 1:1.7.8p2-5
+mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
+rmdir /var/run/sudo 2>/dev/null
+
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog HISTORY NEWS README TROUBLESHOOTING UPGRADE sample.*
@@ -250,8 +250,7 @@ fi
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
-%attr(700,root,root) %dir /var/run/sudo
-/usr/lib/tmpfiles.d/%{name}.conf
+%attr(700,root,root) %dir /var/db/sudo
 
 %files -n openldap-schema-sudo
 %defattr(644,root,root,755)
