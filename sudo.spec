@@ -21,7 +21,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.7.9
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -222,7 +222,7 @@ fi
 
 %triggerpostun -- %{name} < 1:1.7.8p2-5
 mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
-rmdir /var/run/sudo 2>/dev/null
+rmdir /var/run/sudo 2>/dev/null || :
 
 %files
 %defattr(644,root,root,755)
