@@ -249,6 +249,8 @@ rmdir /var/run/sudo 2>/dev/null || :
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/db/sudo
 
+%if %{with ldap}
 %files -n openldap-schema-sudo
 %defattr(644,root,root,755)
 %{schemadir}/sudo.schema
+%endif
