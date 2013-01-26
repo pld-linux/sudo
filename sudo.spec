@@ -20,13 +20,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.9p1
+Version:	1.7.10p4
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	784ac5d58b87fd9147078cafb15945ca
+# Source0-md5:	7c85d333696850982f83c8a5b975cae0
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -152,7 +152,7 @@ cp -p acinclude.m4 acinclude.m4.orig
 %{__libtoolize}
 %{__mv} install-custom-sh install-sh
 cp -f /usr/share/automake/config.sub .
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
