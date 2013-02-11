@@ -164,6 +164,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-logpath=/var/log/sudo \
 	--with-ignore-dot \
 	--with-env-editor \
+	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-loglen=320 \
 	--enable-zlib=system \
