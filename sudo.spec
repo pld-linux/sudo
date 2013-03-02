@@ -21,13 +21,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.7.10p7
+Version:	1.8.6p7
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	9faa5ceaf23cca0468d0f5d211bac6e4
+# Source0-md5:	126abfa2e841139e774d4c67d80f0e5b
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -125,6 +125,17 @@ Sudo (superuser do) дозволяє системному адміністрат
 пам'ятає пароль; використання одного конфігураційного файлу (sudoers)
 на багатьох машинах.
 
+%package devel
+Summary:	Header file for sudo plugins development
+Summary(pl.UTF-8):	Plik nagłówkowy do tworzenia wtyczek dla sudo
+Group:		Development/Libraries
+
+%description devel
+Header file for sudo plugins development.
+
+%description devel -l pl.UTF-8
+Plik nagłówkowy do tworzenia wtyczek dla sudo.
+
 %package -n openldap-schema-sudo
 Summary:	Sudo LDAP schema
 Summary(pl.UTF-8):	Schemat bazy sudo dla LDAP
@@ -202,8 +213,11 @@ touch $RPM_BUILD_ROOT/var/log/sudo
 
 %if %{with ldap}
 install -d $RPM_BUILD_ROOT%{schemadir}
-cp -p schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
+cp -p doc/schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
 %endif
+
+# sudo,sudoers domains
+%find_lang %{name} --all-name
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -230,10 +244,10 @@ fi
 mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
 rmdir /var/run/sudo 2>/dev/null || :
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc ChangeLog HISTORY NEWS README TROUBLESHOOTING UPGRADE sample.*
-%{?with_ldap:%doc README.LDAP sudoers2ldif}
+%doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE,sample.*}
+%{?with_ldap:%doc README.LDAP plugins/sudoers/sudoers2ldif}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
@@ -244,9 +258,11 @@ rmdir /var/run/sudo 2>/dev/null || :
 %attr(755,root,root) %{_sbindir}/visudo
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
 %attr(755,root,root) %{_libdir}/sudo_noexec.so
+%attr(755,root,root) %{_libdir}/sudoers.so
 %{_mandir}/man5/sudoers.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
+%{_mandir}/man8/sudo_plugin.8*
 %{_mandir}/man8/sudoedit.8*
 %{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*
@@ -254,6 +270,10 @@ rmdir /var/run/sudo 2>/dev/null || :
 %attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/db/sudo
+
+%files devel
+%defattr(644,root,root,755)
+%{_includedir}/sudo_plugin.h
 
 %if %{with ldap}
 %files -n openldap-schema-sudo
