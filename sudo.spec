@@ -1,5 +1,6 @@
 #
 # Conditional build:
+%bcond_without	audit		# Linux audit support
 %bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
 %bcond_without	ldap		# disable LDAP support
 %bcond_without	pam		# disable PAM support
@@ -34,12 +35,15 @@ Patch0:		%{name}-libtool.patch
 Patch1:		%{name}-env.patch
 Patch2:		config.patch
 URL:		http://www.sudo.ws/sudo/
+%{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake
+BuildRequires:	bison
+BuildRequires:	flex
 BuildRequires:	gettext-devel
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
-BuildRequires:	libtool >= 2:2.2.6
+BuildRequires:	libtool >= 2:2.2.6b
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
@@ -156,23 +160,24 @@ cp -f /usr/share/automake/config.sub .
 %{__autoconf}
 %configure \
 	NROFFPROG=nroff \
+	--enable-zlib=system \
+	--with-env-editor \
+	--with-ignore-dot \
 	--with-incpath=/usr/include/security \
+	%{?with_kerberos5:--with-kerb5} \
+	%{?with_ldap:--with-ldap} \
+	%{?with_audit:--with-linux-audit} \
+	--with-logfac=auth \
+	--with-logging=both \
+	--with-loglen=320 \
+	--with-logpath=/var/log/sudo \
+	--with-long-otp-prompt \
 	--with-pam \
 	--with-pam-login \
-	--with-logging=both \
-	--with-logfac=auth \
-	--with-logpath=/var/log/sudo \
-	--with-ignore-dot \
-	--with-env-editor \
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
-	--with-loglen=320 \
-	--enable-zlib=system \
-	--with%{!?with_kerberos5:out}-kerb5 \
-	--with%{!?with_ldap:out}-ldap \
-	--with%{!?with_skey:out}-skey \
-	--with%{!?with_selinux:out}-selinux \
-	--with-long-otp-prompt
+	%{?with_selinux:--with-selinux} \
+	%{?with_skey:--with-skey}
 
 %{__make}
 
