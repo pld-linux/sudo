@@ -6,6 +6,7 @@
 %bcond_without	pam		# disable PAM support
 %bcond_without	selinux		# build without SELinux support
 %bcond_with	skey		# enable skey (onetime passwords) support (conflicts with PAM)
+%bcond_without	tests
 
 %if "%{pld_release}" == "ac"
 %define		pam_ver	0.80.1
@@ -21,13 +22,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.8.6p8
+Version:	1.8.7
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	6dac48c73c8e0932980efcddafa569af
+# Source0-md5:	a02367090e1dac8d0c1747de1127b6bf
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
@@ -192,6 +193,8 @@ cp -f /usr/share/automake/config.sub .
 
 %{__make}
 
+%{?with_tests:%{__make} check}
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/log/sudo-io,%{_mandir}/man8}
@@ -256,10 +259,14 @@ rmdir /var/run/sudo 2>/dev/null || :
 %attr(4755,root,root) %{_bindir}/sudoedit
 %attr(755,root,root) %{_bindir}/sudoreplay
 %attr(755,root,root) %{_sbindir}/visudo
-%{?with_selinux:%attr(755,root,root) %{_libdir}/sesh}
-%attr(755,root,root) %{_libdir}/sudo_noexec.so
-%attr(755,root,root) %{_libdir}/sudoers.so
+%dir %{_libdir}/sudo
+%{?with_selinux:%attr(755,root,root) %{_libdir}/sudo/sesh}
+%attr(755,root,root) %{_libdir}/sudo/group_file.so
+%attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
+%attr(755,root,root) %{_libdir}/sudo/sudoers.so
+%attr(755,root,root) %{_libdir}/sudo/system_group.so
 %{_mandir}/man5/sudoers.5*
+%{_mandir}/man5/sudo.conf.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
 %{_mandir}/man8/sudo_plugin.8*
