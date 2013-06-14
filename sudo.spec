@@ -7,7 +7,7 @@
 %bcond_without	pam		# disable PAM support
 %bcond_without	selinux		# build without SELinux support
 %bcond_with	skey		# enable skey (onetime passwords) support (conflicts with PAM)
-%bcond_without	tests
+%bcond_without	tests		# do not perform "make check"
 
 %if "%{pld_release}" == "ac"
 %define		pam_ver	0.80.1
