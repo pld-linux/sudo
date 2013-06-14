@@ -1,3 +1,4 @@
+# TODO: SSSD support?
 #
 # Conditional build:
 %bcond_without	audit		# Linux audit support
