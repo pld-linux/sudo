@@ -145,6 +145,9 @@ Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
 Requires:	sed >= 4.0
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description -n openldap-schema-sudo
 This package contains sudo.schema for openldap.
