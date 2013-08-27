@@ -24,7 +24,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.8.7
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -247,7 +247,11 @@ if [ "$1" = "0" ]; then
 	%service -q ldap restart
 fi
 
-%triggerpostun -- %{name} < 1:1.7.4p3-2
+%triggerpostun -- %{name} < 1:1.7.8p2-5
+mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
+rmdir /var/run/sudo 2>/dev/null || :
+
+%triggerpostun -- %{name} < 1:1.8.7-2
 # add include statement to sudoers
 if ! grep -q '#includedir %{_sysconfdir}/sudoers.d' /etc/sudoers; then
 	echo 'Adding includedir %{_sysconfdir}/sudoers.d to /etc/sudoers'
@@ -257,10 +261,6 @@ if ! grep -q '#includedir %{_sysconfdir}/sudoers.d' /etc/sudoers; then
 		#includedir %{_sysconfdir}/sudoers.d
 	EOF
 fi
-
-%triggerpostun -- %{name} < 1:1.7.8p2-5
-mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
-rmdir /var/run/sudo 2>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
