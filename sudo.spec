@@ -247,6 +247,17 @@ if [ "$1" = "0" ]; then
 	%service -q ldap restart
 fi
 
+%triggerpostun -- %{name} < 1:1.7.4p3-2
+# add include statement to sudoers
+if ! grep -q '#includedir %{_sysconfdir}/sudoers.d' /etc/sudoers; then
+	echo 'Adding includedir %{_sysconfdir}/sudoers.d to /etc/sudoers'
+	cat <<-EOF >> /etc/sudoers
+		## Read drop-in files from %{_sysconfdir}/sudoers.d
+		## (the '#' here does not indicate a comment)
+		#includedir %{_sysconfdir}/sudoers.d
+	EOF
+fi
+
 %triggerpostun -- %{name} < 1:1.7.8p2-5
 mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
 rmdir /var/run/sudo 2>/dev/null || :
