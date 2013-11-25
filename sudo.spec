@@ -208,7 +208,8 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/var/log
 	install_uid=$(id -u) \
 	install_gid=$(id -g) \
 	sudoers_uid=$(id -u) \
-	sudoers_gid=$(id -g)
+	sudoers_gid=$(id -g) \
+	shlib_mode="0755"
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
