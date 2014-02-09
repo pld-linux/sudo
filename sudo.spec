@@ -23,13 +23,13 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.8.9p4
+Version:	1.8.9p5
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	a46f6de8645e6c5b6668d30657439d1c
+# Source0-md5:	d3f1f1cfca6b2b06b048e1abb7d0227e
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
