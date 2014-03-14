@@ -202,7 +202,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/usr/lib/tmpfiles.d,/var/log/sudo-io,%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},%{systemdtmpfilesdir},/var/log/sudo-io,%{_mandir}/man8}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -215,7 +215,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},/usr/lib
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
-cp -p %{SOURCE4} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 touch $RPM_BUILD_ROOT/var/log/sudo
 
@@ -291,7 +291,7 @@ fi
 %{_mandir}/man8/sudoedit.8*
 %{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*
-/usr/lib/tmpfiles.d/%{name}.conf
+%{systemdtmpfilesdir}/%{name}.conf
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
