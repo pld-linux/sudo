@@ -203,7 +203,7 @@ cp -f /usr/share/automake/config.sub .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d}
-install -d $RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/{run/sudo/ts,log/sudo-io},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,%{_mandir}/man8}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -280,7 +280,6 @@ fi
 %attr(755,root,root) %{_sbindir}/visudo
 %dir %{_libdir}/sudo
 %dir /var/run/sudo
-%dir /var/run/sudo/ts
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sudo/sesh}
 %attr(755,root,root) %{_libdir}/sudo/group_file.so
 %attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
