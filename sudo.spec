@@ -181,9 +181,6 @@ cp -f /usr/share/automake/config.sub .
 	--with-env-editor \
 	--with-ignore-dot \
 	--with-incpath=/usr/include/security \
-	%{?with_kerberos5:--with-kerb5} \
-	%{?with_ldap:--with-ldap} \
-	%{?with_audit:--with-linux-audit} \
 	--with-logfac=auth \
 	--with-logging=both \
 	--with-loglen=320 \
@@ -193,9 +190,12 @@ cp -f /usr/share/automake/config.sub .
 	--with-pam-login \
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
-	%{?with_selinux:--with-selinux} \
-	%{?with_skey:--with-skey} \
-	%{?with_sssd:--with-sssd}
+	%{__with kerberos5 kerb5} \
+	%{__with ldap} \
+	%{__with audit linux-audit} \
+	%{__with selinux} \
+	%{__with skey} \
+	%{__with sssd} \
 
 %{__make}
 
