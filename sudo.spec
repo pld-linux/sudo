@@ -1,12 +1,12 @@
-# TODO: SSSD support?
 #
 # Conditional build:
 %bcond_without	audit		# Linux audit support
-%bcond_with	kerberos5	# enable Kerberos V support (conflicts with PAM)
-%bcond_without	ldap		# disable LDAP support
-%bcond_without	pam		# disable PAM support
-%bcond_without	selinux		# build without SELinux support
-%bcond_with	skey		# enable skey (onetime passwords) support (conflicts with PAM)
+%bcond_with	kerberos5	# Kerberos V support (conflicts with PAM)
+%bcond_without	ldap		# LDAP support
+%bcond_without	pam		# PAM support
+%bcond_without	selinux		# SELinux support
+%bcond_with	skey		# skey (onetime passwords) support (conflicts with PAM)
+%bcond_without	sssd		# SSSD support plugin
 %bcond_without	tests		# do not perform "make check"
 
 %if "%{pld_release}" == "ac"
@@ -194,7 +194,8 @@ cp -f /usr/share/automake/config.sub .
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	%{?with_selinux:--with-selinux} \
-	%{?with_skey:--with-skey}
+	%{?with_skey:--with-skey} \
+	%{?with_sssd:--with-sssd}
 
 %{__make}
 
