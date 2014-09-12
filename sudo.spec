@@ -253,11 +253,12 @@ if [ "$1" = "0" ]; then
 	%service -q ldap restart
 fi
 
-%triggerpostun -- %{name} < 1:1.7.8p2-5
+%triggerpostun -- %{name} < 1:1.8.7-2
+# 1:1.7.8p2-5
 mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
 rmdir /var/run/sudo 2>/dev/null || :
 
-%triggerpostun -- %{name} < 1:1.8.7-2
+# 1:1.8.7-2
 # add include statement to sudoers
 if ! grep -q '#includedir %{_sysconfdir}/sudoers.d' /etc/sudoers; then
 	echo 'Adding includedir %{_sysconfdir}/sudoers.d to /etc/sudoers'
