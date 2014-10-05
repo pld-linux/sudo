@@ -27,20 +27,19 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.8.10p3
-Release:	2
+Version:	1.8.11
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	fcd8d0d9f9f0397d076ee901e242ed39
+# Source0-md5:	9a642cf6aca5375f8569a2961f44d0f3
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Source4:	%{name}.tmpfiles
-Patch0:		%{name}-libtool.patch
-Patch1:		%{name}-env.patch
-Patch2:		config.patch
+Patch0:		%{name}-env.patch
+Patch1:		config.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -63,6 +62,9 @@ Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		schemadir	/usr/share/openldap/schema
+
+# uses sudo_warn_*_v1 symbols from binaries
+%define		skip_post_check_so	libsudo_util.so.*
 
 %description
 Sudo (superuser do) allows a permitted user to execute a command as
@@ -171,7 +173,6 @@ cp -p acinclude.m4 acinclude.m4.orig
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__mv} install-sh install-custom-sh
@@ -226,6 +227,7 @@ cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 touch $RPM_BUILD_ROOT/var/log/sudo
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/sudo/*.la
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %if %{with ldap}
@@ -286,12 +288,15 @@ fi
 %attr(755,root,root) %{_bindir}/sudoreplay
 %attr(755,root,root) %{_sbindir}/visudo
 %dir %{_libdir}/sudo
-%dir /var/run/sudo
+%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so.*.*.*
+%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so.0
+%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so
 %{?with_selinux:%attr(755,root,root) %{_libdir}/sudo/sesh}
 %attr(755,root,root) %{_libdir}/sudo/group_file.so
 %attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libdir}/sudo/system_group.so
+%dir /var/run/sudo
 %{_mandir}/man5/sudoers.5*
 %{_mandir}/man5/sudo.conf.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
