@@ -47,7 +47,7 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	groff
 BuildRequires:	flex
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2.2.6
