@@ -38,17 +38,17 @@ Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Source4:	%{name}.tmpfiles
-Source5:	ax_sys_weak_alias.m4
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
+BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	bison
-BuildRequires:	groff
 BuildRequires:	flex
 BuildRequires:	gettext-tools
+BuildRequires:	groff
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2.2.6
@@ -176,7 +176,7 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch1 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
-cp %{SOURCE5} m4/ax_sys_weak_alias.m4
+cp /usr/share/aclocal/ax_sys_weak_alias.m4 m4
 
 %build
 %{__mv} install-sh install-custom-sh
