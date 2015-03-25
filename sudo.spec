@@ -27,17 +27,18 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.8.11
-Release:	2
+Version:	1.8.13
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	9a642cf6aca5375f8569a2961f44d0f3
+# Source0-md5:	f61577ec330ad1bd504c0e2eec6ea2d8
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Source4:	%{name}.tmpfiles
+Source5:	ax_sys_weak_alias.m4
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 URL:		http://www.sudo.ws/sudo/
@@ -174,6 +175,9 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch0 -p1
 %patch1 -p1
 
+! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
+cp %{SOURCE5} m4/ax_sys_weak_alias.m4
+
 %build
 %{__mv} install-sh install-custom-sh
 %{__libtoolize}
@@ -277,7 +281,8 @@ fi
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE,sample.*}
+%doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}
+%doc examples/{*.conf,sudoers}
 %{?with_ldap:%doc README.LDAP plugins/sudoers/sudoers2ldif}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
