@@ -47,7 +47,7 @@ BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
-BuildRequires:	gettext-tools
+BuildRequires:	gettext-devel
 BuildRequires:	groff
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
@@ -228,6 +228,11 @@ cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+
+%if "%{pld_release}" == "ac"
+# not present in ac, no point searching it
+%{__sed} -i -e '/pam_keyinit.so/d' $RPM_BUILD_ROOT/etc/pam.d/sudo*
+%endif
 
 touch $RPM_BUILD_ROOT/var/log/sudo
 
