@@ -28,7 +28,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.8.13
-Release:	2
+Release:	2.1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -40,6 +40,7 @@ Source3:	%{name}.logrotate
 Source4:	%{name}.tmpfiles
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
+Patch2:		sudo-parse_boottime_properly.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -174,6 +175,7 @@ cp -p acinclude.m4 acinclude.m4.orig
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
 cp /usr/share/aclocal/ax_sys_weak_alias.m4 m4
