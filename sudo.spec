@@ -28,7 +28,7 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 Version:	1.8.13
-Release:	3
+Release:	4
 Epoch:		1
 License:	BSD
 Group:		Applications/System
