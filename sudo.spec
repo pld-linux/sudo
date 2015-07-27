@@ -27,20 +27,19 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-Version:	1.8.13
-Release:	4
+Version:	1.8.14p3
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	f61577ec330ad1bd504c0e2eec6ea2d8
+# Source0-md5:	93dbd1e47c136179ff1b01494c1c0e75
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
 Source4:	%{name}.tmpfiles
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
-Patch2:		sudo-parse_boottime_properly.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -175,10 +174,9 @@ cp -p acinclude.m4 acinclude.m4.orig
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
-cp /usr/share/aclocal/ax_sys_weak_alias.m4 m4
+cp %{_aclocaldir}/ax_sys_weak_alias.m4 m4
 
 %build
 %{__mv} install-sh install-custom-sh
@@ -202,6 +200,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-pam-login \
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
+	--with-exampledir=%{_examplesdir}/%{name}-%{version} \
 	%{__with kerberos5 kerb5} \
 	%{__with ldap} \
 	%{__with audit linux-audit} \
@@ -289,7 +288,6 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}
-%doc examples/{*.conf,sudoers}
 %{?with_ldap:%doc README.LDAP plugins/sudoers/sudoers2ldif}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
@@ -318,6 +316,7 @@ fi
 %{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*
 %{systemdtmpfilesdir}/%{name}.conf
+%{_examplesdir}/%{name}-%{version}
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(700,root,root) /var/log/sudo-io
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
