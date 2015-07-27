@@ -27,6 +27,7 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
+# please see doc/UPGRADE for important changes each time updating sudo
 Version:	1.8.14p3
 Release:	1
 Epoch:		1
