@@ -37,7 +37,6 @@ Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Source3:	%{name}.logrotate
-Source4:	%{name}.tmpfiles
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 URL:		http://www.sudo.ws/sudo/
@@ -201,6 +200,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
 	--with-exampledir=%{_examplesdir}/%{name}-%{version} \
+	--enable-tmpfiles.d=%{systemdtmpfilesdir} \
 	%{__with kerberos5 kerb5} \
 	%{__with ldap} \
 	%{__with audit linux-audit} \
@@ -214,8 +214,8 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d}
-install -d $RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},,%{_mandir}/man8} \
+	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,/var/run/sudo/ts}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -228,7 +228,6 @@ install -d $RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,%{_mandir}/man
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
-cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %if "%{pld_release}" == "ac"
 # not present in ac, no point searching it
@@ -270,10 +269,6 @@ if [ "$1" = "0" ]; then
 fi
 
 %triggerpostun -- %{name} < 1:1.8.7-2
-# 1:1.7.8p2-5
-mv -f /var/run/sudo/* /var/db/sudo 2>/dev/null
-rmdir /var/run/sudo 2>/dev/null || :
-
 # 1:1.8.7-2
 # add include statement to sudoers
 if ! grep -q '#includedir %{_sysconfdir}/sudoers.d' /etc/sudoers; then
@@ -293,6 +288,7 @@ fi
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %attr(755,root,root) %{_bindir}/sudoreplay
@@ -306,7 +302,6 @@ fi
 %attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libdir}/sudo/system_group.so
-%dir /var/run/sudo
 %{_mandir}/man5/sudoers.5*
 %{_mandir}/man5/sudo.conf.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
@@ -319,8 +314,9 @@ fi
 %{_examplesdir}/%{name}-%{version}
 %attr(600,root,root) %ghost /var/log/sudo
 %attr(700,root,root) /var/log/sudo-io
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(700,root,root) %dir /var/db/sudo
+%dir %attr(711,root,root) /var/run/sudo
+%dir %attr(700,root,root) /var/run/sudo/ts
 
 %files devel
 %defattr(644,root,root,755)
