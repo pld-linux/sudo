@@ -29,7 +29,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
 Version:	1.8.17p1
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -37,7 +37,6 @@ Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
 # Source0-md5:	50a840a688ceb6fa3ab24fc0adf4fa23
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
-Source3:	%{name}.logrotate
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 URL:		http://www.sudo.ws/sudo/
@@ -216,7 +215,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},,%{_mandir}/man8} \
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d},,%{_mandir}/man8} \
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,/var/run/sudo/ts}
 
 %{__make} -j1 install \
@@ -229,7 +228,6 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d,logrotate.d},,%{_mand
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
-cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 
 %if "%{pld_release}" == "ac"
 # not present in ac, no point searching it
@@ -288,7 +286,6 @@ fi
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/sudo
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %attr(755,root,root) %{_bindir}/sudoreplay
