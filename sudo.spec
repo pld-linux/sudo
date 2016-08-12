@@ -29,7 +29,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
 Version:	1.8.17p1
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -191,8 +191,8 @@ cp -f /usr/share/automake/config.sub .
 	--with-env-editor \
 	--with-ignore-dot \
 	--with-incpath=/usr/include/security \
-	--with-logfac=auth \
-	--with-logging=both \
+	--with-logfac=authpriv \
+	--with-logging=syslog \
 	--with-loglen=320 \
 	--with-logpath=/var/log/sudo \
 	--with-long-otp-prompt \
@@ -200,6 +200,7 @@ cp -f /usr/share/automake/config.sub .
 	--with-pam-login \
 	--with-passprompt="[sudo] password for %%p: " \
 	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin" \
+	--with-tty-tickets \
 	--with-exampledir=%{_examplesdir}/%{name}-%{version} \
 	--enable-tmpfiles.d=%{systemdtmpfilesdir} \
 	%{__with kerberos5 kerb5} \
@@ -234,8 +235,6 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/sudo
 # not present in ac, no point searching it
 %{__sed} -i -e '/pam_keyinit.so/d' $RPM_BUILD_ROOT/etc/pam.d/sudo*
 %endif
-
-touch $RPM_BUILD_ROOT/var/log/sudo
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/sudo/*.la
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
@@ -313,7 +312,6 @@ fi
 %{_mandir}/man8/visudo.8*
 %{systemdtmpfilesdir}/%{name}.conf
 %{_examplesdir}/%{name}-%{version}
-%attr(600,root,root) %ghost /var/log/sudo
 %attr(700,root,root) /var/log/sudo-io
 %attr(700,root,root) %dir /var/db/sudo
 %dir %attr(711,root,root) /var/run/sudo
