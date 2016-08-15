@@ -215,7 +215,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d},,%{_mandir}/man8} \
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d},%{_mandir}/man8} \
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,/var/run/sudo/ts}
 
 %{__make} -j1 install \
