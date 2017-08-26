@@ -28,13 +28,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
-Version:	1.8.20p2
+Version:	1.8.21
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	03da8e711caca6fd93e57751bfb74adc
+# Source0-md5:	9dd537cd2284e7078a407bce6ad0434b
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -225,6 +225,8 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d},%{_mandir}/man8} \
 	sudoers_uid=$(id -u) \
 	sudoers_gid=$(id -g) \
 	shlib_mode="0755"
+
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/sudoers.dist
 
 cp -p %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/sudo
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
