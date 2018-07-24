@@ -28,17 +28,18 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
-Version:	1.8.21p2
+Version:	1.8.23
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	cd3993d910c713ae72e94beebd230b22
+# Source0-md5:	ea444d747feb1decfebdffd0b38b0739
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
+Patch2:		%{name}-sh.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -166,13 +167,14 @@ Ten pakiet zawiera sudo.schema dla pakietu openldap.
 %prep
 %setup -q
 # only local macros
-mv aclocal.m4 acinclude.m4
+%{__mv} aclocal.m4 acinclude.m4
 # do not load libtool macros from acinclude
 cp -p acinclude.m4 acinclude.m4.orig
 %{__sed} -i -e '/Pull in libtool macros/,$d' acinclude.m4
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
 cp %{_aclocaldir}/ax_sys_weak_alias.m4 m4
@@ -215,8 +217,7 @@ cp -f /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{sudoers.d,pam.d},%{_mandir}/man8} \
-	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},/var/log/sudo-io,/var/run/sudo/ts}
+install -d $RPM_BUILD_ROOT{/etc/pam.d,/var/log/sudo-io}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -283,11 +284,12 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}
-%{?with_ldap:%doc README.LDAP plugins/sudoers/sudoers2ldif}
+%{?with_ldap:%doc README.LDAP}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
+%attr(755,root,root) %{_bindir}/cvtsudoers
 %attr(4755,root,root) %{_bindir}/sudo
 %attr(4755,root,root) %{_bindir}/sudoedit
 %attr(755,root,root) %{_bindir}/sudoreplay
@@ -301,7 +303,9 @@ fi
 %attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libdir}/sudo/system_group.so
+%{_mandir}/man1/cvtsudoers.1*
 %{_mandir}/man5/sudoers.5*
+%{_mandir}/man5/sudoers_timestamp.5*
 %{_mandir}/man5/sudo.conf.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
@@ -313,8 +317,6 @@ fi
 %{_examplesdir}/%{name}-%{version}
 %attr(700,root,root) /var/log/sudo-io
 %attr(700,root,root) %dir /var/db/sudo
-%dir %attr(711,root,root) /var/run/sudo
-%dir %attr(700,root,root) /var/run/sudo/ts
 
 %files devel
 %defattr(644,root,root,755)
