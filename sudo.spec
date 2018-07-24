@@ -58,6 +58,8 @@ BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.595
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 BuildRequires:	zlib-devel
+# uses /run
+Requires:	FHS >= 3.0
 Requires:	pam >= %{pam_ver}
 Obsoletes:	cu-sudo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
