@@ -29,7 +29,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
 Version:	1.8.23
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -239,7 +239,7 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 %{__sed} -i -e '/pam_keyinit.so/d' $RPM_BUILD_ROOT/etc/pam.d/sudo*
 %endif
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/sudo/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libexecdir}/sudo/*.la
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %if %{with ldap}
@@ -296,15 +296,15 @@ fi
 %attr(4755,root,root) %{_bindir}/sudoedit
 %attr(755,root,root) %{_bindir}/sudoreplay
 %attr(755,root,root) %{_sbindir}/visudo
-%dir %{_libdir}/sudo
-%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so.*.*.*
-%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so.0
-%attr(755,root,root) %{_libdir}/sudo/libsudo_util.so
-%{?with_selinux:%attr(755,root,root) %{_libdir}/sudo/sesh}
-%attr(755,root,root) %{_libdir}/sudo/group_file.so
-%attr(755,root,root) %{_libdir}/sudo/sudo_noexec.so
-%attr(755,root,root) %{_libdir}/sudo/sudoers.so
-%attr(755,root,root) %{_libdir}/sudo/system_group.so
+%dir %{_libexecdir}/sudo
+%attr(755,root,root) %{_libexecdir}/sudo/libsudo_util.so.*.*.*
+%attr(755,root,root) %{_libexecdir}/sudo/libsudo_util.so.0
+%attr(755,root,root) %{_libexecdir}/sudo/libsudo_util.so
+%{?with_selinux:%attr(755,root,root) %{_libexecdir}/sudo/sesh}
+%attr(755,root,root) %{_libexecdir}/sudo/group_file.so
+%attr(755,root,root) %{_libexecdir}/sudo/sudo_noexec.so
+%attr(755,root,root) %{_libexecdir}/sudo/sudoers.so
+%attr(755,root,root) %{_libexecdir}/sudo/system_group.so
 %{_mandir}/man1/cvtsudoers.1*
 %{_mandir}/man5/sudoers.5*
 %{_mandir}/man5/sudoers_timestamp.5*
