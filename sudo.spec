@@ -28,13 +28,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
-Version:	1.8.31
+Version:	1.9.5p2
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
-# Source0-md5:	ce17ff6e72a70f8d5dabba8abf3cd2de
+# Source0-md5:	e6bc4c18c06346e6b3431637a2b5f3d5
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -168,6 +168,16 @@ This package contains sudo.schema for openldap.
 %description -n openldap-schema-sudo -l pl.UTF-8
 Ten pakiet zawiera sudo.schema dla pakietu openldap.
 
+%package        logsrvd
+Summary:	High-performance log server for %{name}
+Group:		Daemons
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description    logsrvd
+%{name}-logsrvd is a high-performance log server that accepts event
+and I/O logs from sudo. It can be used to implement centralized
+logging of sudo logs.
+
 %prep
 %setup -q
 # only local macros
@@ -291,6 +301,7 @@ fi
 %{?with_ldap:%doc README.LDAP}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
+%attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudo.conf
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/sudo-i
 %attr(755,root,root) %{_bindir}/cvtsudoers
@@ -303,7 +314,9 @@ fi
 %attr(755,root,root) %{_libexecdir}/sudo/libsudo_util.so.0
 %attr(755,root,root) %{_libexecdir}/sudo/libsudo_util.so
 %{?with_selinux:%attr(755,root,root) %{_libexecdir}/sudo/sesh}
+%attr(755,root,root) %{_libexecdir}/sudo/audit_json.so
 %attr(755,root,root) %{_libexecdir}/sudo/group_file.so
+%attr(755,root,root) %{_libexecdir}/sudo/sample_approval.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libexecdir}/sudo/system_group.so
@@ -331,3 +344,13 @@ fi
 %defattr(644,root,root,755)
 %{schemadir}/sudo.schema
 %endif
+
+%files logsrvd
+%defattr(644,root,root,755)
+%attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudo_logsrvd.conf
+%attr(755,root,root) %{_sbindir}/sudo_logsrvd
+%attr(755,root,root) %{_sbindir}/sudo_sendlog
+%{_mandir}/man5/sudo_logsrv.proto.5*
+%{_mandir}/man5/sudo_logsrvd.conf.5*
+%{_mandir}/man8/sudo_logsrvd.8*
+%{_mandir}/man8/sudo_sendlog.8*
