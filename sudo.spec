@@ -55,7 +55,7 @@ BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
-BuildRequires:	rpmbuild(macros) >= 1.595
+BuildRequires:	rpmbuild(macros) >= 1.752
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 BuildRequires:	zlib-devel
 %if "%{pld_release}" != "ac"
@@ -158,9 +158,7 @@ Group:		Networking/Daemons
 Requires(post,postun):	sed >= 4.0
 Requires:	openldap-servers
 Requires:	sed >= 4.0
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description -n openldap-schema-sudo
 This package contains sudo.schema for openldap.
@@ -168,15 +166,21 @@ This package contains sudo.schema for openldap.
 %description -n openldap-schema-sudo -l pl.UTF-8
 Ten pakiet zawiera sudo.schema dla pakietu openldap.
 
-%package        logsrvd
-Summary:	High-performance log server for %{name}
+%package logsrvd
+Summary:	High-performance log server for sudo
+Summary(pl.UTF-8):	Wysoko wydajny serwer logujący dla sudo
 Group:		Daemons
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
-%description    logsrvd
-%{name}-logsrvd is a high-performance log server that accepts event
+%description logsrvd
+sudo-logsrvd is a high-performance log server that accepts event
 and I/O logs from sudo. It can be used to implement centralized
 logging of sudo logs.
+
+%description logsrvd -l pl.UTF-8
+sudo-logsrvd to wysoko wydajny serwer logujący przyjmyjący logi
+zdarzeń i we/wy z sudo. Może byc używany do zaimplementowania
+scentralizowanego logowania z sudo.
 
 %prep
 %setup -q
