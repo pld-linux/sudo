@@ -33,7 +33,7 @@ Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
-Source0:	ftp://ftp.sudo.ws/pub/sudo/%{name}-%{version}.tar.gz
+Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
 # Source0-md5:	e6bc4c18c06346e6b3431637a2b5f3d5
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
