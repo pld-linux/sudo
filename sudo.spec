@@ -28,13 +28,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
-Version:	1.9.7p2
+Version:	1.9.8p2
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	d6f8217bfd16649236e100c49e0a7cc4
+# Source0-md5:	f831c1d62835cde89c261465d9c781e4
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -319,6 +319,7 @@ fi
 %attr(755,root,root) %{_libexecdir}/sudo/audit_json.so
 %attr(755,root,root) %{_libexecdir}/sudo/group_file.so
 %attr(755,root,root) %{_libexecdir}/sudo/sample_approval.so
+%attr(755,root,root) %{_libexecdir}/sudo/sudo_intercept.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libexecdir}/sudo/system_group.so
