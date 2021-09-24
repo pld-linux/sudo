@@ -29,7 +29,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see doc/UPGRADE for important changes each time updating sudo
 Version:	1.9.8p2
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
