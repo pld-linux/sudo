@@ -12,6 +12,7 @@
 %bcond_with	skey		# skey (onetime passwords) support (conflicts with PAM)
 %bcond_without	sssd		# SSSD support plugin
 %bcond_without	tests		# do not perform "make check"
+%bcond_without	apparmor	# AppArmor support
 
 %if "%{pld_release}" == "ac"
 %define		pam_ver	0.80.1
@@ -27,14 +28,14 @@ Summary(pt_BR.UTF-8):	Permite que usuários específicos executem comandos como 
 Summary(ru.UTF-8):	Позволяет определенным пользователям исполнять команды от имени root
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
-# please see doc/UPGRADE for important changes each time updating sudo
-Version:	1.9.8p2
-Release:	2
+# please see docs/UPGRADE.md for important changes each time updating sudo
+Version:	1.9.11p1
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	f831c1d62835cde89c261465d9c781e4
+# Source0-md5:	8cd373aec6cde5e93a646d2950bf8df6
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -50,6 +51,7 @@ BuildRequires:	flex
 BuildRequires:	gettext-devel
 BuildRequires:	groff
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
+%{?with_apparmor:BuildRequires:	libapparmor-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
@@ -205,6 +207,7 @@ cp -f /usr/share/automake/config.sub .
 %configure \
 	NROFFPROG=nroff \
 	--enable-zlib=system \
+	%{__with_without apparmor} \
 	--with-env-editor \
 	--with-ignore-dot \
 	--with-incpath=/usr/include/security \
@@ -258,7 +261,7 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 
 %if %{with ldap}
 install -d $RPM_BUILD_ROOT%{schemadir}
-cp -p doc/schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
+cp -p docs/schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
 %endif
 
 # sudo,sudoers domains
@@ -299,8 +302,8 @@ fi
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc ChangeLog NEWS README doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}
-%{?with_ldap:%doc README.LDAP}
+%doc ChangeLog LICENSE.md NEWS README.md docs/{CONTRIBUTORS,HISTORY,TROUBLESHOOTING,UPGRADE}.md
+%{?with_ldap:%doc README.LDAP.md}
 %attr(550,root,root) %dir %{_sysconfdir}/sudoers.d
 %attr(440,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudoers
 %attr(640,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/sudo.conf
@@ -324,12 +327,12 @@ fi
 %attr(755,root,root) %{_libexecdir}/sudo/sudoers.so
 %attr(755,root,root) %{_libexecdir}/sudo/system_group.so
 %{_mandir}/man1/cvtsudoers.1*
+%{_mandir}/man5/sudo_plugin.5*
 %{_mandir}/man5/sudoers.5*
 %{_mandir}/man5/sudoers_timestamp.5*
 %{_mandir}/man5/sudo.conf.5*
 %{?with_ldap:%{_mandir}/man5/sudoers.ldap.5*}
 %{_mandir}/man8/sudo.8*
-%{_mandir}/man8/sudo_plugin.8*
 %{_mandir}/man8/sudoedit.8*
 %{_mandir}/man8/sudoreplay.8*
 %{_mandir}/man8/visudo.8*

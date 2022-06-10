@@ -10,4 +10,4 @@ diff -urNp -x '*.orig' sudo-1.9.6p1.org/plugins/sudoers/sudoers.in sudo-1.9.6p1/
 +#
  ## Uncomment to enable logging of a command's output, except for
  ## sudoreplay and reboot.  Use sudoreplay to play back logged sessions.
- # Defaults log_output
+ ## Sudo will create up to 2,176,782,336 I/O logs before recycling them.
