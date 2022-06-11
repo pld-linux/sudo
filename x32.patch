@@ -1,0 +1,21 @@
+--- sudo-1.9.11p1/src/exec_ptrace.c~	2022-06-06 16:42:01.000000000 +0200
++++ sudo-1.9.11p1/src/exec_ptrace.c	2022-06-11 21:36:12.498210857 +0200
+@@ -1035,14 +1035,16 @@
+ 	switch (syscallno) {
+ # ifdef X32_execve
+ 	case X32_execve:
+-# endif
++# else
+ 	case __NR_execve:
++# endif
+ 	    /* Handled below. */
+ 	    break;
+ # ifdef X32_execveat
+ 	case X32_execveat:
+-# endif
++# else
+ 	case __NR_execveat:
++# endif
+ 	    /* We don't currently check execveat(2). */
+ 	    debug_return_bool(true);
+ 	    break;

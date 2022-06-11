@@ -30,7 +30,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
 Version:	1.9.11p1
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -41,6 +41,7 @@ Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 Patch2:		%{name}-sh.patch
+Patch3:		x32.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -195,6 +196,7 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
 cp %{_aclocaldir}/ax_sys_weak_alias.m4 m4
