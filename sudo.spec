@@ -58,6 +58,7 @@ BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.752
 %{?with_skey:BuildRequires:	skey-devel >= 2.2-11}
 BuildRequires:	zlib-devel
