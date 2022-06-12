@@ -1,21 +1,26 @@
---- sudo-1.9.11p1/src/exec_ptrace.c~	2022-06-06 16:42:01.000000000 +0200
-+++ sudo-1.9.11p1/src/exec_ptrace.c	2022-06-11 21:36:12.498210857 +0200
-@@ -1035,14 +1035,16 @@
- 	switch (syscallno) {
- # ifdef X32_execve
- 	case X32_execve:
--# endif
-+# else
- 	case __NR_execve:
+From dfee181d1579a24c679eff960c85bc659c56993f Mon Sep 17 00:00:00 2001
+From: "Todd C. Miller" <Todd.Miller@sudo.ws>
+Date: Sat, 11 Jun 2022 16:59:18 -0600
+Subject: [PATCH] Fix compilation on Linux/x32; GitHub issue #158
+
+---
+ src/exec_ptrace.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/exec_ptrace.h b/src/exec_ptrace.h
+index 4a5a86581..4340a48ea 100644
+--- a/src/exec_ptrace.h
++++ b/src/exec_ptrace.h
+@@ -64,8 +64,10 @@
+  */
+ #if defined(__x86_64__)
+ # define SECCOMP_AUDIT_ARCH	AUDIT_ARCH_X86_64
+-# define X32_execve		__X32_SYSCALL_BIT + 520
+-# define X32_execveat		__X32_SYSCALL_BIT + 545
++# ifndef __ILP32__
++#  define X32_execve		__X32_SYSCALL_BIT + 520
++#  define X32_execveat		__X32_SYSCALL_BIT + 545
 +# endif
- 	    /* Handled below. */
- 	    break;
- # ifdef X32_execveat
- 	case X32_execveat:
--# endif
-+# else
- 	case __NR_execveat:
-+# endif
- 	    /* We don't currently check execveat(2). */
- 	    debug_return_bool(true);
- 	    break;
+ # define sudo_pt_regs		struct user_regs_struct
+ # define reg_syscall(x)		(x).orig_rax
+ # define reg_retval(x)		(x).rax
