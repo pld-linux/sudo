@@ -66,7 +66,7 @@ BuildRequires:	zlib-devel
 Requires:	FHS >= 3.0
 %endif
 Requires:	pam >= %{pam_ver}
-Obsoletes:	cu-sudo
+Obsoletes:	cu-sudo < 1.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		schemadir	/usr/share/openldap/schema
