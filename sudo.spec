@@ -29,19 +29,18 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
-Version:	1.9.11p1
-Release:	3
+Version:	1.9.11p2
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	8cd373aec6cde5e93a646d2950bf8df6
+# Source0-md5:	70fa9c8752b6d495725da45f4211d3a7
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 Patch2:		%{name}-sh.patch
-Patch3:		x32.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.53
@@ -197,7 +196,6 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 ! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
 cp %{_aclocaldir}/ax_sys_weak_alias.m4 m4
