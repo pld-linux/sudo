@@ -16,4 +16,4 @@ diff -dur -x '*~' -x '*.orig' -x '*.rej' sudo-1.8.13.orig/plugins/sudoers/env.c 
 +    "SSH_AUTH_SOCK",
      "XAUTHORITY",
      "XAUTHORIZATION",
-     NULL
+     "XDG_CURRENT_DESKTOP",

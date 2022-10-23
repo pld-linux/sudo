@@ -29,13 +29,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
-Version:	1.9.11p3
+Version:	1.9.12
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	07e95c947129d8820c78caa1fc79c7fd
+# Source0-md5:	82187207e0d037861bc5acb54bc5090f
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -322,7 +322,6 @@ fi
 %{?with_selinux:%attr(755,root,root) %{_libexecdir}/sudo/sesh}
 %attr(755,root,root) %{_libexecdir}/sudo/audit_json.so
 %attr(755,root,root) %{_libexecdir}/sudo/group_file.so
-%attr(755,root,root) %{_libexecdir}/sudo/sample_approval.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudo_intercept.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudo_noexec.so
 %attr(755,root,root) %{_libexecdir}/sudo/sudoers.so
