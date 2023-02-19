@@ -29,13 +29,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
-Version:	1.9.12p2
+Version:	1.9.13p1
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	2c67b10f2aca4698eef0491142653382
+# Source0-md5:	ee3c5e27479be258af23af1bb132e1db
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -43,7 +43,7 @@ Patch1:		config.patch
 Patch2:		%{name}-sh.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
-BuildRequires:	autoconf >= 2.53
+BuildRequires:	autoconf >= 2.69
 BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	bison
