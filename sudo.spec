@@ -48,7 +48,7 @@ BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	groff
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_apparmor:BuildRequires:	libapparmor-devel}
