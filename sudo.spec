@@ -29,13 +29,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
-Version:	1.9.14p2
+Version:	1.9.14p3
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	dcb3e785029193407b3216156db74dad
+# Source0-md5:	4cc21cf7c9a89290b230954aed0d1e11
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
