@@ -44,7 +44,6 @@ Patch2:		%{name}-sh.patch
 URL:		http://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.69
-BuildRequires:	autoconf-archive
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
@@ -196,9 +195,6 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-
-! [ -f m4/ax_sys_weak_alias.m4 ] # provide own copy only until it is there
-cp %{_aclocaldir}/ax_sys_weak_alias.m4 m4
 
 %build
 %{__libtoolize}
