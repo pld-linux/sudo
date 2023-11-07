@@ -198,7 +198,6 @@ cp -p acinclude.m4 acinclude.m4.orig
 
 %build
 %{__libtoolize}
-cp -f /usr/share/automake/config.sub .
 %{__aclocal} -I m4
 %{__autoconf}
 %configure \
