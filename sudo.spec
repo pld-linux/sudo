@@ -29,13 +29,13 @@ Summary(ru.UTF-8):	Позволяет определенным пользова�
 Summary(uk.UTF-8):	Дозволяє вказаним користувачам виконувати команди від імені root
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
-Version:	1.9.16p2
+Version:	1.9.17
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Applications/System
 Source0:	https://www.sudo.ws/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	52681ba928fb7aba46998f061d9ba85c
+# Source0-md5:	c25b8d4fdd3837bcb83478866f50d4ff
 Source1:	%{name}.pamd
 Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
@@ -48,7 +48,6 @@ BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	gettext-tools
-BuildRequires:	groff
 %{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{?with_apparmor:BuildRequires:	libapparmor-devel}
 %{?with_selinux:BuildRequires:	libselinux-devel}
@@ -201,11 +200,10 @@ cp -p acinclude.m4 acinclude.m4.orig
 %{__aclocal} -I m4
 %{__autoconf}
 %configure \
-	NROFFPROG=nroff \
+	MANDOC=/usr/bin/mandoc \
 	--enable-zlib=system \
 	%{__with_without apparmor} \
 	--with-env-editor \
-	--with-ignore-dot \
 	--with-incpath=/usr/include/security \
 	--with-logfac=authpriv \
 	--with-logging=syslog \
