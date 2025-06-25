@@ -30,7 +30,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
 Version:	1.9.17
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -257,6 +257,9 @@ cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/sudo-i
 install -d $RPM_BUILD_ROOT%{schemadir}
 cp -p docs/schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
 %endif
+
+# unsupported
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/yue
 
 # sudo,sudoers domains
 %find_lang %{name} --all-name
