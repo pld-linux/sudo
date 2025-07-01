@@ -258,9 +258,6 @@ install -d $RPM_BUILD_ROOT%{schemadir}
 cp -p docs/schema.OpenLDAP $RPM_BUILD_ROOT%{schemadir}/sudo.schema
 %endif
 
-# unsupported
-%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/yue
-
 # sudo,sudoers domains
 %find_lang %{name} --all-name
 
