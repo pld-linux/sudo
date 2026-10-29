@@ -30,7 +30,7 @@ Summary(uk.UTF-8):	Дозволяє вказаним користувачам в
 Name:		sudo
 # please see docs/UPGRADE.md for important changes each time updating sudo
 Version:	1.9.17p2
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -41,7 +41,11 @@ Source2:	%{name}-i.pamd
 Patch0:		%{name}-env.patch
 Patch1:		config.patch
 Patch2:		%{name}-sh.patch
-URL:		http://www.sudo.ws/sudo/
+Patch3:		CVE-2026-35535.patch
+Patch4:		CVE-2026-96512.patch
+# https://github.com/sudo-project/sudo/commit/0d98cb88ae89b01955adef3908422ce3a48e1d62
+Patch5:		%{name}-set_user_groups-fail.patch
+URL:		https://www.sudo.ws/sudo/
 %{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake
@@ -53,6 +57,7 @@ BuildRequires:	gettext-tools
 %{?with_selinux:BuildRequires:	libselinux-devel}
 BuildRequires:	libtool >= 2:2.2.6
 %{?with_ldap:BuildRequires:	openldap-devel >= 2.3.0}
+BuildRequires:	openssl-devel
 %{?with_pam:BuildRequires:	pam-devel}
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpm-build >= 4.6
@@ -194,6 +199,9 @@ cp -p acinclude.m4 acinclude.m4.orig
 %patch -P0 -p1
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P5 -p1
 
 %build
 %{__libtoolize}
@@ -201,6 +209,7 @@ cp -p acinclude.m4 acinclude.m4.orig
 %{__autoconf}
 %configure \
 	MANDOC=/usr/bin/mandoc \
+	--enable-openssl \
 	--enable-zlib=system \
 	%{__with_without apparmor} \
 	--with-env-editor \
